@@ -12,47 +12,81 @@ export class CrudRepository implements IRepository {
         this.model = mongoose.model(modelName, schema);
     }
 
+    async create(data: Object) {
+        try {
+            await this.db.connect();
+            const res = await this.model.create(data);
+            this.db.disconnect().then((_) => {});
+            return res;
+        } catch (error) {
+            throw Error('Error creating record');
+        }
+    }
+
     async findOne(data: mongoose.FilterQuery<any>) {
-        await this.db.connect()
-        const res = await this.model.findOne(data);
-        this.db.disconnect().then(_=>{})
-        return res
+        try {
+            await this.db.connect();
+            const res = await this.model.findOne(data);
+            this.db.disconnect().then((_) => {});
+            return res;
+        } catch (error) {
+            throw Error('Error finding one record');
+        }
     }
 
     async findById(id: string) {
-        await this.db.connect();
-        const res = await this.model.findById(id);;
-        this.db.disconnect().then((_) => {});
-        return res;
+        try {
+            await this.db.connect();
+            const res = await this.model.findById(id);
+            this.db.disconnect().then((_) => {});
+            return res;
+        } catch (error) {
+            throw Error('Error finding by Id');
+        }
     }
 
     async updateOne(data: mongoose.FilterQuery<any>) {
-
-      await this.db.connect();
-      const res = await this.model.updateOne(data);
-      this.db.disconnect().then((_) => {});
-      return res;
+        try {
+            await this.db.connect();
+            const res = await this.model.updateOne(data);
+            this.db.disconnect().then((_) => {});
+            return res;
+        } catch (error) {
+            throw Error('Error');
+        }
     }
 
     async updateMany(data: mongoose.FilterQuery<any>) {
-      await this.db.connect();
-      const res = await this.model.updateMany(data);
-      this.db.disconnect().then((_) => {});
-      return res;
+        try {
+            await this.db.connect();
+            const res = await this.model.updateMany(data);
+            this.db.disconnect().then((_) => {});
+            return res;
+        } catch (error) {
+            throw Error('Error');
+        }
     }
 
     async deleteOne(data: mongoose.FilterQuery<any>) {
-      await this.db.connect();
-      const res = await this.model.deleteOne(data);
-      this.db.disconnect().then((_) => {});
-      return res;
+        try {
+            await this.db.connect();
+            const res = await this.model.deleteOne(data);
+            this.db.disconnect().then((_) => {});
+            return res;
+        } catch (error) {
+            throw Error('Error');
+        }
     }
 
     async deleteMany(data: mongoose.FilterQuery<any>) {
-      await this.db.connect();
-      const res = await this.model.deleteMany(data);
-      this.db.disconnect().then((_) => {});
-      return res;
+        try {
+            await this.db.connect();
+            const res = await this.model.deleteMany(data);
+            this.db.disconnect().then((_) => {});
+            return res;
+        } catch (error) {
+            throw Error('Error');
+        }
     }
 
     async modelObject() {

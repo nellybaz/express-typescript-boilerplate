@@ -2,12 +2,12 @@
   "name": "express-typescript-boilerplate",
   "version": "1.0.0",
   "description": "",
-  "main": "app.ts",
+  "main": "src/app.ts",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon app.ts",
+    "dev": "nodemon src/app.ts",
     "build": "rm -rf dist && tsc -p .",
-    "test": "mocha -r ts-node/register test/**/* --timeout 10000"
+    "test": "mocha -r ts-node/register src/test/**/* --timeout 10000"
   },
   "author": "",
   "license": "ISC",

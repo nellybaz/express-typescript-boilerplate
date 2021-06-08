@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import { CrudRepository } from './crud.repository';
 
-const SampleSchema = new Schema({
+export const SampleSchema = new Schema({
     email: String,
     passwordHash: String,
     dateCreated: Date,
