@@ -1,9 +1,6 @@
-import mongoose, { Mongoose, Model } from 'mongoose';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import { ObjectId } from 'mongodb';
-import { IDataSource } from '../interface';
-import { IRepository } from '../interface/repository.interface';
-import { MongoDBDataSource } from '../datasources/mongodb.datasource';
+import { CrudRepository } from './crud.repository';
 
 const UserSchema = new Schema({
     email: String,
@@ -12,16 +9,10 @@ const UserSchema = new Schema({
     dateUpdate: Date
 });
 
-export class UserRepository implements IRepository {
-    db: IDataSource;
-    model: Model<any, any, any>;
+export class UserRepository extends CrudRepository {
 
     constructor() {
-        this.db = new MongoDBDataSource();
-        this.model = mongoose.model('User', UserSchema);
+      super({schema: UserSchema, modelName:'User'});
     }
 
-    async find(data:any) {
-        return this.model.findOne(data)
-    }
 }
