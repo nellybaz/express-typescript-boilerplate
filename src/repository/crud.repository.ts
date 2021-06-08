@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 const Schema = mongoose.Schema;
 import { IDataSource, IRepository, RepositoryParameter } from '../interface';
 import { MongoDBDataSource } from '../datasources/mongodb.datasource';
@@ -19,6 +19,7 @@ export class CrudRepository implements IRepository {
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {
+            this.db.disconnect().then((_) => {});
             throw Error('Error creating record');
         }
     }
@@ -30,6 +31,7 @@ export class CrudRepository implements IRepository {
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {
+            this.db.disconnect().then((_) => {});
             throw Error('Error finding one record');
         }
     }
@@ -41,6 +43,7 @@ export class CrudRepository implements IRepository {
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {
+            this.db.disconnect().then((_) => {});
             throw Error('Error finding by Id');
         }
     }
@@ -52,6 +55,7 @@ export class CrudRepository implements IRepository {
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {
+            this.db.disconnect().then((_) => {});
             throw Error('Error');
         }
     }
@@ -63,6 +67,7 @@ export class CrudRepository implements IRepository {
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {
+            this.db.disconnect().then((_) => {});
             throw Error('Error');
         }
     }
@@ -74,6 +79,7 @@ export class CrudRepository implements IRepository {
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {
+            this.db.disconnect().then((_) => {});
             throw Error('Error');
         }
     }
@@ -85,6 +91,7 @@ export class CrudRepository implements IRepository {
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {
+            this.db.disconnect().then((_) => {});
             throw Error('Error');
         }
     }

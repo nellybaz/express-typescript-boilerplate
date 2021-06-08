@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 import { CrudRepository } from './crud.repository';
 
 export const SampleSchema = new Schema({
-    email: String,
-    passwordHash: String,
-    createdAt: Date,
-    updatedAt: Date
+    email: { type: String, required: true },
+    passwordHash: { type: String, required: true },
+    createdAt: { type: Date, default: new Date() },
+    updatedAt: { type: Date, default: new Date() }
 });
 
 export class SampleRepository extends CrudRepository {
