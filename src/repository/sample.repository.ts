@@ -1,18 +1,17 @@
 import mongoose from 'mongoose';
+import { RepositoryParameter } from '../interface';
 const Schema = mongoose.Schema;
 import { CrudRepository } from './crud.repository';
 
 export const SampleSchema = new Schema({
     email: String,
     passwordHash: String,
-    dateCreated: Date,
-    dateUpdate: Date
+    createdAt: Date,
+    updatedAt: Date
 });
 
 export class SampleRepository extends CrudRepository {
-
-    constructor() {
-      super({schema: SampleSchema, modelName:'User'});
+    constructor({ schema, modelName }: RepositoryParameter) {
+        super({ schema, modelName });
     }
-
 }
