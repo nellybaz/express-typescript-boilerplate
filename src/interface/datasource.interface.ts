@@ -1,4 +1,4 @@
-export interface IDataSource{
-  connect:Function,
-  disconnect:Function
+export interface IDataSource {
+    connect: () => Promise<any>;
+    disconnect: () => Promise<any>;
 }

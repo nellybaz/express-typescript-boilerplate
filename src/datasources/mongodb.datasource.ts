@@ -13,7 +13,7 @@ export class MongoDBDataSource implements IDataSource {
             });
         } catch (error) {
             throw Error('Error connecting to repository datasource');
-        }
+        } 
     };
     disconnect = async () => {
         try {

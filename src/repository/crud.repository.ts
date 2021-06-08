@@ -13,27 +13,46 @@ export class CrudRepository implements IRepository {
     }
 
     async findOne(data: mongoose.FilterQuery<any>) {
-        return this.model.findOne(data);
+        await this.db.connect()
+        const res = await this.model.findOne(data);
+        this.db.disconnect().then(_=>{})
+        return res
     }
 
     async findById(id: string) {
-        return this.model.findById(id);
+        await this.db.connect();
+        const res = await this.model.findById(id);;
+        this.db.disconnect().then((_) => {});
+        return res;
     }
 
     async updateOne(data: mongoose.FilterQuery<any>) {
-        return this.model.updateOne(data);
+
+      await this.db.connect();
+      const res = await this.model.updateOne(data);
+      this.db.disconnect().then((_) => {});
+      return res;
     }
 
     async updateMany(data: mongoose.FilterQuery<any>) {
-        return this.model.updateMany(data);
+      await this.db.connect();
+      const res = await this.model.updateMany(data);
+      this.db.disconnect().then((_) => {});
+      return res;
     }
 
     async deleteOne(data: mongoose.FilterQuery<any>) {
-        return this.model.deleteOne(data);
+      await this.db.connect();
+      const res = await this.model.deleteOne(data);
+      this.db.disconnect().then((_) => {});
+      return res;
     }
 
     async deleteMany(data: mongoose.FilterQuery<any>) {
-        return this.model.deleteMany(data);
+      await this.db.connect();
+      const res = await this.model.deleteMany(data);
+      this.db.disconnect().then((_) => {});
+      return res;
     }
 
     async modelObject() {
