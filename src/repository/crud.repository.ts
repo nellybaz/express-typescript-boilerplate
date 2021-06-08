@@ -28,6 +28,14 @@ export class CrudRepository implements IRepository {
         return this.model.updateMany(data);
     }
 
+    async deleteOne(data: mongoose.FilterQuery<any>) {
+        return this.model.deleteOne(data);
+    }
+
+    async deleteMany(data: mongoose.FilterQuery<any>) {
+        return this.model.deleteMany(data);
+    }
+
     async modelObject() {
         return this.model;
     }
