@@ -4,8 +4,7 @@ dotenv.config();
 
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
 const SERVER_PORT = process.env.SERVER_PORT || 8000;
-const DB_URL = process.env.DB_URL || ''
-
+const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/mydb';
 
 const SERVER = {
     hostname: SERVER_HOSTNAME,
