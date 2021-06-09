@@ -10,9 +10,9 @@ router.post("/login", async (req: Request, res: Response) => {
     const result = await userService.userLogin(req.body);
     logging.info("usercontroller", "hello", result)
     const {
-        status, error, message, data
+        status, error, message, data, statusCode
     } = result;
-    res.status(result.statusCode).json(Responses.successResponse(status, message, data, error));
+    res.status(statusCode).json(Responses.successResponse(status, message, data, error));
 });
 
 export = router;
