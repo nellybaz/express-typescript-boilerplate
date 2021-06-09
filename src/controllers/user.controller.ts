@@ -8,7 +8,6 @@ import Responses from "../utils/response";
 
 const userService = new UserServivce(new UserRepositry());
 router.post("/login", async (req: Request, res: Response) => {
-    console.log(req.body);
     const result = await userService.userLogin(req.body);
     const {
         status, error, message, data, statusCode

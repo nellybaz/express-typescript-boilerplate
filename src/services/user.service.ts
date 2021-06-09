@@ -28,7 +28,7 @@ export class UserServivce {
                 throw new Unauthorized("Incorrect password")
             }
             // generate token
-            const token = AuthHelper.generateToken({ userId: user._id });
+            const token = await AuthHelper.generateToken({ userId: user._id });
 
             return {
                 status: true,
