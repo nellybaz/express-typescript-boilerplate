@@ -17,6 +17,11 @@ router.post("/login", async (req: Request, res: Response) => {
 });
 
 router.post("/register", async (req: Request, res: Response) => {
+    const result = await userService.userRegister(req.body);
+    const {
+        status, error, message, data, statusCode
+    } = result;
+    res.status(statusCode).json(Responses.successResponse(status, message, data, error));
 });
 
 export = router;
