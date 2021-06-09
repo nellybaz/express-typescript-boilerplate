@@ -22,4 +22,8 @@ export class SampleService {
         
       }
     }
+
+    async complexAction(){
+      return this._repo.complexQuery()
+    }
 }

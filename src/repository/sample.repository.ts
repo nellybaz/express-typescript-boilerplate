@@ -15,4 +15,8 @@ export class SampleRepository extends CrudRepository {
         const _schema = SampleSchema;
         super({ schema: _schema, modelName: 'Sample' });
     }
+
+    async complexQuery(){
+        await (await this.modelObject()).findByIdAndUpdate()
+    };
 }

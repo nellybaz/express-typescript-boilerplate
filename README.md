@@ -9,3 +9,9 @@
 - Generate a build `npm run build`
 
 - Start production code `npm start`
+
+
+
+Controller -> Service -> Repository
+
+User Request -> Business logic -> Data model

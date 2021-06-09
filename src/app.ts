@@ -1,5 +1,5 @@
 import express, { Application, Request, Response, NextFunction } from "express";
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import logging from '../config/logging';
 import config from '../config';
 import Routes from "./routes";
@@ -24,8 +24,8 @@ app.use((req:Request, res:Response, next) => {
 });
 
 /** Parse the body of the request */
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 
 /** Rules of our API */
