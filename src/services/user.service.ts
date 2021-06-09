@@ -1,6 +1,7 @@
 import AuthHelper from "../helpers/authHelpers";
 import { UserRepositry } from "../repository/user.repository";
-import { NotFound, Unauthorized } from "http-errors";
+import { Unauthorized } from "http-errors";
+import logging from '../../config/logging';
 
 
 interface Login {
@@ -30,11 +31,24 @@ export class UserServivce {
             }
             // generate token
             const token = AuthHelper.generateToken({ userId: user._id });
+            logging.info('user.service', "hello", token);
+
             return {
-                user, token
+                status: true,
+                data: {
+                    email: user.email,
+                    token
+                },
+                message: "Authentication successfull",
+                error: null
             };
         } catch (error) {
-            return error;
+            return {
+                status: false,
+                data: null,
+                message: error.message,
+                error
+            };
         }
     }
 }

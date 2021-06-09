@@ -48,7 +48,7 @@ app.use((req:Request, res:Response, next:NextFunction) => {
 });
 
 app.get("/", (_: Request, res: Response) => {
-  res.send(`Server Online on ${new Date()}`)
+    res.send(`Online on ${new Date()}`)
 })
 
 new Routes(app).load();
