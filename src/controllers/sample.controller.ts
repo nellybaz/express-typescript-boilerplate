@@ -10,4 +10,11 @@ router.get('/', async (req: Request, res: Response) => {
         data: await userService.getAllUsers()
     });
 });
+
+router.post('/add', async (req: Request, res: Response) => {
+    return res.status(200).json({
+        message: 'pong',
+        data: await userService.addSample(req.body)
+    });
+});
 export = router;

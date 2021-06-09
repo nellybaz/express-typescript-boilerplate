@@ -13,4 +13,13 @@ export class SampleService {
         return [];
       }
     }
+
+    async addSample(data:any){
+      // validate data here
+      try {
+        return await this._repo.create(data)
+      } catch (error) {
+        
+      }
+    }
 }
