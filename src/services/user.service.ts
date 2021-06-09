@@ -18,7 +18,6 @@ export class UserServivce {
     async userLogin(payload: Login) {
         try {
             const { email, password } = payload;
-
             // check if user exist
             const user = await this._repo.findOne({ email });
             if (!user) {
@@ -29,9 +28,11 @@ export class UserServivce {
             if (!passwordValid) {
                 throw new Unauthorized("Incorrect password")
             }
-
-
-            return this._repo.findOne({ email });
+            // generate token
+            const token = AuthHelper.generateToken({ userId: user._id });
+            return {
+                user, token
+            };
         } catch (error) {
             return error;
         }

@@ -19,7 +19,7 @@ class AuthHelper {
 
     // handles check for a password validity by comparing the
     // hash with the provided plain password
-    async isPasswordValid(passwordHash: string, password: string) {
+    async isPasswordValid(passwordHash: string, password: string): Promise<boolean> {
         return bcrypt.compareSync(password, passwordHash);
     }
 
