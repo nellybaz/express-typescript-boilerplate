@@ -2,8 +2,8 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import bodyParser from 'body-parser';
 import logging from '../config/logging';
 import config from '../config';
+import Routes from "./routes";
 
-import SampleController from './controller/sample.controller'
 
 const NAMESPACE = 'Server';
 const app:Application = express();
@@ -46,7 +46,7 @@ app.get("/", (_: Request, res: Response) => {
   res.send(`Online on ${new Date()}`)
 })
 
-app.use('/api/sample', SampleController);
+new Routes(app).load()
 
 /** Error handling */
 app.use((_:Request, res:Response, __:NextFunction) => {
