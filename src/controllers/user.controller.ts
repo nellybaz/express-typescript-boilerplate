@@ -16,7 +16,7 @@ router.post("/login", async (req: Request, res: Response) => {
     res.status(statusCode).json({ status, message, data, error });
 });
 
-router.post("/register", async (req: Request, res: Response) => {
+router.post("/register", validateInput(loginValidationSchema), async (req: Request, res: Response) => {
     const result = await userService.userRegister(req.body);
     const {
         status, error, message, data, statusCode
