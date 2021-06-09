@@ -8,14 +8,6 @@ class Responses {
             error
         };
     }
-    // errorResponse(error: Error) {
-    //     return {
-    //         status: false,
-    //         message: error.message,
-    //         data: null,
-    //         error
-    //     };
-    // }
 }
 
 module.exports = new Responses();

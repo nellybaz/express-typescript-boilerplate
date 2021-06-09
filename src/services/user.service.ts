@@ -35,6 +35,7 @@ export class UserServivce {
 
             return {
                 status: true,
+                statusCode: 201,
                 data: {
                     email: user.email,
                     token
@@ -45,6 +46,7 @@ export class UserServivce {
         } catch (error) {
             return {
                 status: false,
+                statusCode: error.status || 400,
                 data: null,
                 message: error.message,
                 error
