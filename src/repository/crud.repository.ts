@@ -48,10 +48,22 @@ export class CrudRepository implements IRepository {
         }
     }
 
-    async updateOne(data: mongoose.FilterQuery<any>) {
+    async findAll(data?: mongoose.FilterQuery<any>) {
         try {
             await this.db.connect();
-            const res = await this.model.updateOne(data);
+            const res = await this.model.find(data!);
+            this.db.disconnect().then((_) => {});
+            return res;
+        } catch (error) {
+            this.db.disconnect().then((_) => {});
+            throw Error('Error finding one record');
+        }
+    }
+
+    async updateOne(filter: mongoose.FilterQuery<any>, data:Object) {
+        try {
+            await this.db.connect();
+            const res = await this.model.updateOne(filter, data);
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -60,10 +72,10 @@ export class CrudRepository implements IRepository {
         }
     }
 
-    async updateMany(data: mongoose.FilterQuery<any>) {
+    async updateMany(filter: mongoose.FilterQuery<any>, data:Object) {
         try {
             await this.db.connect();
-            const res = await this.model.updateMany(data);
+            const res = await this.model.updateMany(filter, data);
             this.db.disconnect().then((_) => {});
             return res;
         } catch (error) {

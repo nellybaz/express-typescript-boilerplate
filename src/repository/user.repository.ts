@@ -11,7 +11,8 @@ export const UserSchema = new Schema({
 });
 
 export class UserRepository extends CrudRepository {
-    constructor({ schema, modelName }: RepositoryParameter) {
-        super({ schema, modelName });
+    constructor() {
+        const _schema = UserSchema;
+        super({ schema: _schema, modelName: 'Sample' });
     }
 }
