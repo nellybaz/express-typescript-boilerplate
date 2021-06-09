@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 const router: Router = Router();
-import { SampleService } from '../service';
+import { SampleService } from '../services';
 import { SampleRepository } from '../repository';
 
 const userService = new SampleService(new SampleRepository());

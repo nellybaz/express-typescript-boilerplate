@@ -1,5 +1,5 @@
 import { Application } from "express";
-import SampleController from './controller/sample.controller';
+import SampleController from './controllers/sample.controller';
 export default class Routes{
   _app:Application
   constructor(app:Application){

@@ -1,6 +1,6 @@
 import mongoose, { Model } from 'mongoose';
 const Schema = mongoose.Schema;
-import { IDataSource, IRepository, RepositoryParameter } from '../interface';
+import { IDataSource, IRepository, RepositoryParameter } from '../interfaces';
 import { MongoDBDataSource } from '../datasources/mongodb.datasource';
 
 export class CrudRepository implements IRepository {

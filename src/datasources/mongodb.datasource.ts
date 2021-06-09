@@ -1,4 +1,4 @@
-import { IDataSource } from '../interface';
+import { IDataSource } from '../interfaces';
 import mongoose from 'mongoose';
 import config from '../../config';
 

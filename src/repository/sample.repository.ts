@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { RepositoryParameter } from '../interface';
+import { RepositoryParameter } from '../interfaces';
 const Schema = mongoose.Schema;
 import { CrudRepository } from './crud.repository';
 
