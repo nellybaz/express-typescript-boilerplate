@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import jsonwebtoken from "jsonwebtoken";
-
+import jwt from "jsonwebtoken";
+import config from "../../config";
 class AuthHelper {
 
     // handles password hashing
@@ -21,6 +21,13 @@ class AuthHelper {
     // hash with the provided plain password
     async isPasswordValid(passwordHash: string, password: string) {
         return bcrypt.compareSync(password, passwordHash);
+    }
+
+    async generateToken(payload: { [key: string]: any }): Promise<string> {
+        const secret = config.server.jwtSecret;
+        // @ts-ignore
+        return jwt.sign(payload, secret, { expiresIn: '10h' });
+
     }
 }
 
