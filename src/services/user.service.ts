@@ -32,7 +32,7 @@ export class UserServivce {
 
             return {
                 status: true,
-                statusCode: 201,
+                statusCode: 200,
                 data: {
                     email: user.email,
                     token
