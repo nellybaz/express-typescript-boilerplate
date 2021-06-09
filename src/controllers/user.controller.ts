@@ -16,4 +16,7 @@ router.post("/login", async (req: Request, res: Response) => {
     res.status(statusCode).json({ status, message, data, error });
 });
 
+router.post("/register", async (req: Request, res: Response) => {
+});
+
 export = router;
