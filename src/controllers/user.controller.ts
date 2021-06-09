@@ -3,12 +3,13 @@ import logging from "../../config/logging";
 import { UserRepositry } from "../repository/user.repository";
 import { UserServivce } from "../services";
 const router: Router = Router();
-const Responses = require("../utils/response");
+import Responses from "../utils/response";
+
 
 const userService = new UserServivce(new UserRepositry());
 router.post("/login", async (req: Request, res: Response) => {
+    console.log(req.body);
     const result = await userService.userLogin(req.body);
-    logging.info("usercontroller", "hello", result)
     const {
         status, error, message, data, statusCode
     } = result;

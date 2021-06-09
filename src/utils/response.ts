@@ -10,4 +10,4 @@ class Responses {
     }
 }
 
-module.exports = new Responses();
+export default new Responses();
