@@ -3,7 +3,7 @@ import { UserRepositry } from "../repository/user.repository";
 import { UserServivce } from "../services";
 const router: Router = Router();
 // import Responses from "../utils/response";
-import { IResponse } from "../interfaces/response.interface";
+// import { IResponse } from "../interfaces/response.interface";
 
 
 

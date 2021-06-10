@@ -14,7 +14,6 @@ export class UserServivce {
         this._repo = repository;
     }
 
-    // method to login here
     async userLogin(payload: Login): Promise<IResponse> {
         try {
             const { email, password } = payload;

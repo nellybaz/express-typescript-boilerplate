@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import config from "../../config";
 class AuthHelper {
 
-    // handles password hashing
     async hashPassword(password: string) {
         // checks if there is password provided
         if (!password) {
@@ -17,8 +16,7 @@ class AuthHelper {
         return bcrypt.hashSync(password, salt);
     }
 
-    // handles check for a password validity by comparing the
-    // hash with the provided plain password
+
     async isPasswordValid(passwordHash: string, password: string): Promise<boolean> {
         return bcrypt.compareSync(password, passwordHash);
     }
