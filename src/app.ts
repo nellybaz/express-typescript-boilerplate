@@ -3,25 +3,13 @@ import express, { Application, Request, Response, NextFunction, RequestHandler }
 import logging from '../config/logging';
 import config from '../config';
 import Routes from './routes';
-import { Container, injectable } from 'inversify';
+import { container } from './inversify.config';
 import { InversifyExpressServer, BaseMiddleware } from 'inversify-express-utils';
 import './ioc';
-import { CrudRepository, SampleRepository } from './repository';
-import TYPES from '../config/types';
-import { SampleService } from './services';
-import { IRepository } from './interfaces';
-import { MongoDBDataSource } from './datasources/mongodb.datasource';
 
 
 const NAMESPACE = 'Server';
-const port = 8000;
-
-const container = new Container();
-
-container.bind<CrudRepository>(TYPES.CrudRepository).to(CrudRepository);
-container.bind<SampleRepository>(TYPES.SampleRepository).to(SampleRepository);
-container.bind<SampleService>(TYPES.SampleService).to(SampleService);
-container.bind<MongoDBDataSource>(TYPES.MongodbClient).to(MongoDBDataSource);
+const port = config.server.port;
 
 
 const server = new InversifyExpressServer(container);

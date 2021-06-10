@@ -1,2 +1,2 @@
 export * from './home.controller'
-// export * from './sample.controller';
+export * from './say.controller'

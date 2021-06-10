@@ -3,7 +3,8 @@ const TYPES = {
     SampleRepository: Symbol.for('SampleRepository'),
     CrudRepository: Symbol.for('CrudRepository'),
     IRepository: Symbol.for('IRepository'),
-    MongodbClient: Symbol.for('MongodbClient')
+    MongodbClient: Symbol.for('MongodbClient'),
+    InputModifier: Symbol.for('InputModifier')
 };
 
 export default TYPES;
