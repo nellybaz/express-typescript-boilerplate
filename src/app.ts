@@ -1,14 +1,23 @@
-import express, { Application, Request, Response, NextFunction } from "express";
-// import bodyParser from 'body-parser';
+import 'reflect-metadata';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import logging from '../config/logging';
 import config from '../config';
-import Routes from "./routes";
+import Routes from './routes';
+import { Container } from 'inversify';
+import { InversifyExpressServer } from 'inversify-express-utils';
+import './controllers/home.controller'
+
+
 
 
 const NAMESPACE = 'Server';
-const app:Application = express();
+// const app:Application = express();
 const port = 8000;
 
+const container = new Container();
+const server = new InversifyExpressServer(container);
+
+const app: Application = server.build();
 
 /** Log the request */
 app.use((req:Request, res:Response, next) => {
@@ -19,14 +28,13 @@ app.use((req:Request, res:Response, next) => {
         /** Log the res */
         logging.info(NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`);
     })
-    
+
     next();
 });
 
-/** Parse the body of the request */
+// /** Parse the body of the request */
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 /** Rules of our API */
 app.use((req:Request, res:Response, next:NextFunction) => {
@@ -41,21 +49,19 @@ app.use((req:Request, res:Response, next:NextFunction) => {
     return next();
 });
 
-
 app.get("/", (_: Request, res: Response) => {
   res.send(`Server Online on ${new Date()}`)
 })
 
-new Routes(app).load()
+new Routes(app).load();
 
 /** Error handling */
-app.use((_:Request, res:Response, __:NextFunction) => {
+app.use((_: Request, res: Response, __: NextFunction) => {
     const error = new Error('Not found');
 
     res.status(404).json({
         message: error.message
     });
 });
-
 
 app.listen(port, () => logging.info(NAMESPACE, `Server is running ${config.server.hostname}:${config.server.port}`));
