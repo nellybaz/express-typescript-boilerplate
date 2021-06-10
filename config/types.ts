@@ -4,7 +4,9 @@ const TYPES = {
     CrudRepository: Symbol.for('CrudRepository'),
     IRepository: Symbol.for('IRepository'),
     MongodbClient: Symbol.for('MongodbClient'),
-    InputModifier: Symbol.for('InputModifier')
+    InputModifier: Symbol.for('InputModifier'),
+    InvoiceService: Symbol.for('InvoiceService'),
+    InvoiceRepository: Symbol.for('InvoiceRepository')
 };
 
 export default TYPES;
