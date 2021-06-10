@@ -13,7 +13,8 @@ const TalentContractSchema = new Schema(
         currency: { type: String, required: true },
         isPaid: { type: Boolean, required: true },
         contractName: { type: String, required: true },
-        description: { type: String, required: true }
+        description: { type: String, required: true },
+        emailSent:{type:Boolean, required:true}
     },
     { timestamps: true }
 );

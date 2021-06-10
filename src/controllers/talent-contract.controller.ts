@@ -10,6 +10,6 @@ export class TalentContract {
 
     @httpPost('/')
     create(req: Request, res: Response) {
-        return this.talentContractService.createContract(req.body);
+        return this.talentContractService.generate(req.body);
     }
 }
