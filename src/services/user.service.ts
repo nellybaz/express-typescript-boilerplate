@@ -2,17 +2,18 @@ import AuthHelper from "../helpers/authHelpers";
 import { UserRepositry } from "../repository/user.repository";
 import { IResponse } from "../interfaces/response.interface";
 import { Conflict, InternalServerError, Unauthorized } from "http-errors";
+import { inject, injectable } from "inversify";
+import TYPES from "../../config/types";
 
 interface Login {
     email: string,
     password: string
 }
 
+
+@injectable()
 export class UserServivce {
-    _repo: UserRepositry;
-    constructor(repository: UserRepositry) {
-        this._repo = repository;
-    }
+    constructor(@inject(TYPES.UserRepositry) private _repo: UserRepositry) {}
 
     async userLogin(payload: Login): Promise<IResponse> {
         try {
@@ -20,12 +21,12 @@ export class UserServivce {
             // check if user exist
             const user = await this._repo.findOne({ email });
             if (!user) {
-                throw new Unauthorized("User not found");
+                throw new Unauthorized('User not found');
             }
             // check if password is valid
             const passwordValid = await AuthHelper.isPasswordValid(user.passwordHash, password);
             if (!passwordValid) {
-                throw new Unauthorized("Incorrect password")
+                throw new Unauthorized('Incorrect password');
             }
             // generate token
             const token = await AuthHelper.generateToken({ userId: user._id });
@@ -37,10 +38,10 @@ export class UserServivce {
                     email: user.email,
                     token
                 },
-                message: "Authentication successfull",
+                message: 'Authentication successfull',
                 error: null
             };
-        } catch (error:any) {
+        } catch (error: any) {
             return {
                 status: false,
                 statusCode: error.status || 400,
@@ -59,7 +60,7 @@ export class UserServivce {
             // check if that email exist
             const existingUser = await this._repo.findOne({ email });
             if (existingUser) {
-                throw new Conflict("Email exist");
+                throw new Conflict('Email exist');
             }
 
             // hash password
@@ -82,11 +83,10 @@ export class UserServivce {
                     email: user.email,
                     token
                 },
-                message: "User registration successfull",
+                message: 'User registration successfull',
                 error: null
-            }
-
-        } catch (error:any) {
+            };
+        } catch (error: any) {
             return {
                 status: false,
                 statusCode: error.status || 400,

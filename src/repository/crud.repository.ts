@@ -6,12 +6,13 @@ import { provide } from 'inversify-binding-decorators';
 import { inject, injectable } from 'inversify';
 // import { SampleSchema } from './sample.repository';
 
-const SampleSchema = new Schema({
-    email: { type: String, required: true },
-    passwordHash: { type: String, required: true },
-    createdAt: { type: Date, default: new Date() },
-    updatedAt: { type: Date, default: new Date() }
-});
+const SampleSchema = new Schema(
+    {
+        email: { type: String, required: true },
+        passwordHash: { type: String, required: true }
+    },
+    { timestamps: true }
+);
 
 @injectable()
 // implements IRepository
@@ -21,7 +22,7 @@ export class CrudRepository {
     async create(data: Object) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('Sample', SampleSchema).create(data);
+            const res = await mongoose.model('User', SampleSchema).create(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -33,7 +34,7 @@ export class CrudRepository {
     async findOne(data: mongoose.FilterQuery<any>) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('Sample', SampleSchema).findOne(data);
+            const res = await mongoose.model('User', SampleSchema).findOne(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -45,7 +46,7 @@ export class CrudRepository {
     async findById(id: string) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('Sample', SampleSchema).findById(id);
+            const res = await mongoose.model('User', SampleSchema).findById(id);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -57,7 +58,7 @@ export class CrudRepository {
     async findAll(data?: mongoose.FilterQuery<any>) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('Sample', SampleSchema).find(data!);
+            const res = await mongoose.model('User', SampleSchema).find(data!);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -69,7 +70,7 @@ export class CrudRepository {
     async updateOne(filter: mongoose.FilterQuery<any>, data: Object) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('Sample', SampleSchema).updateOne(filter, data);
+            const res = await mongoose.model('User', SampleSchema).updateOne(filter, data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -81,7 +82,7 @@ export class CrudRepository {
     async updateMany(filter: mongoose.FilterQuery<any>, data: Object) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('Sample', SampleSchema).updateMany(filter, data);
+            const res = await mongoose.model('User', SampleSchema).updateMany(filter, data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -93,7 +94,7 @@ export class CrudRepository {
     async deleteOne(data: mongoose.FilterQuery<any>) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('Sample', SampleSchema).deleteOne(data);
+            const res = await mongoose.model('User', SampleSchema).deleteOne(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -105,7 +106,7 @@ export class CrudRepository {
     async deleteMany(data: mongoose.FilterQuery<any>) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('Sample', SampleSchema).deleteMany(data);
+            const res = await mongoose.model('User', SampleSchema).deleteMany(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -115,6 +116,6 @@ export class CrudRepository {
     }
 
     async modelObject() {
-        return mongoose.model('Sample', SampleSchema);
+        return mongoose.model('User', SampleSchema);
     }
 }

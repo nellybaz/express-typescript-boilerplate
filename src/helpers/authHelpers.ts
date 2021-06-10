@@ -6,7 +6,7 @@ class AuthHelper {
     async hashPassword(password: string) {
         // checks if there is password provided
         if (!password) {
-            throw new Error("Error hashing password");
+            throw new Error("Password is required");
         }
 
         // salt round which bcrypt will use

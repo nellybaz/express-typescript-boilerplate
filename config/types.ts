@@ -6,7 +6,9 @@ const TYPES = {
     MongodbClient: Symbol.for('MongodbClient'),
     InputModifier: Symbol.for('InputModifier'),
     InvoiceService: Symbol.for('InvoiceService'),
-    InvoiceRepository: Symbol.for('InvoiceRepository')
+    InvoiceRepository: Symbol.for('InvoiceRepository'),
+    UserServivce: Symbol.for('UserServivce'),
+    UserRepositry: Symbol.for('UserRepositry')
 };
 
 export default TYPES;

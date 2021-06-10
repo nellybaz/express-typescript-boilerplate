@@ -1,26 +1,28 @@
-import { Request, Response, Router } from "express";
-import { validateInput } from "../helpers/validator";
-import { loginValidationSchema } from "../middlewares/validationSchema";
-import { UserRepositry } from "../repository/user.repository";
-import { UserServivce } from "../services";
-const router: Router = Router();
+import { Request, Response, Router } from 'express';
+import { inject } from 'inversify';
+import { controller, httpPost } from 'inversify-express-utils';
+import TYPES from '../../config/types';
+import { validateInput } from '../helpers/validator';
+// import { loginValidationSchema } from '../middlewares/validationSchema';
+import { UserServivce } from '../services';
 
 
-const userService = new UserServivce(new UserRepositry());
-router.post("/login", async (req: Request, res: Response) => {
-    const result = await userService.userLogin(req.body);
-    const {
-        status, error, message, data, statusCode
-    } = result;
-    res.status(statusCode).json({ status, message, data, error });
-});
+@controller('/api')
+export class UserController {
+    constructor(@inject(TYPES.UserServivce) private userService: UserServivce) {}
 
-router.post("/register", validateInput(loginValidationSchema), async (req: Request, res: Response) => {
-    const result = await userService.userRegister(req.body);
-    const {
-        status, error, message, data, statusCode
-    } = result;
-    res.status(statusCode).json({status, message, data, error});
-});
+    @httpPost('/login')
+    async login(req: Request, res: Response) {
+        const result = await this.userService.userLogin(req.body);
+        const { status, error, message, data, statusCode } = result;
+        res.status(statusCode).json({ status, message, data, error });
+    }
 
-export = router;
+    // validateInput(loginValidationSchema
+    @httpPost('/register')
+    async register(req: Request, res: Response) {
+        const result = await this.userService.userRegister(req.body);
+        const { status, error, message, data, statusCode } = result;
+        res.status(statusCode).json({ status, message, data, error });
+    }
+}
