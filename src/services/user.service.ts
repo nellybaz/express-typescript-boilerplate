@@ -1,6 +1,7 @@
 import AuthHelper from "../helpers/authHelpers";
 import { UserRepositry } from "../repository/user.repository";
 import { Unauthorized } from "http-errors";
+import { IResponse } from "../interfaces/response.interface";
 
 interface Login {
     email: string,
@@ -14,7 +15,7 @@ export class UserServivce {
     }
 
     // method to login here
-    async userLogin(payload: Login) {
+    async userLogin(payload: Login): Promise<IResponse> {
         try {
             const { email, password } = payload;
             // check if user exist

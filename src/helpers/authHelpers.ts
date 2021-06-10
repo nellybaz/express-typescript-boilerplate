@@ -26,7 +26,7 @@ class AuthHelper {
     async generateToken(payload: { [key: string]: any }): Promise<string> {
         const secret = config.server.jwtSecret;
         // @ts-ignore
-        return jwt.sign(payload, secret, { expiresIn: '10h' });
+        return jwt.sign(payload, secret, { expiresIn: '30d' });
 
     }
 }
