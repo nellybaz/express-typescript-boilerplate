@@ -1,9 +1,10 @@
-import AuthHelper from "../helpers/authHelpers";
+import {HashService} from "./hash.service";
 import { UserRepositry } from "../repository/user.repository";
 import { IResponse } from "../interfaces/response.interface";
 import { Conflict, InternalServerError, Unauthorized } from "http-errors";
 import { inject, injectable } from "inversify";
 import TYPES from "../../config/types";
+import { JWTService } from "./jwt.service";
 
 interface Login {
     email: string,
@@ -24,12 +25,12 @@ export class UserServivce {
                 throw new Unauthorized('User not found');
             }
             // check if password is valid
-            const passwordValid = await AuthHelper.isPasswordValid(user.passwordHash, password);
+            const passwordValid = await HashService.isPasswordValid(user.passwordHash, password);
             if (!passwordValid) {
                 throw new Unauthorized('Incorrect password');
             }
             // generate token
-            const token = await AuthHelper.generateToken({ userId: user._id });
+            const token = await JWTService.generateToken({ userId: user._id });
 
             return {
                 status: true,
@@ -64,7 +65,7 @@ export class UserServivce {
             }
 
             // hash password
-            const passwordHash = await AuthHelper.hashPassword(password);
+            const passwordHash = await HashService.hashPassword(password);
 
             // create the user
             const user = await this._repo.create({ email, passwordHash });
@@ -73,7 +74,7 @@ export class UserServivce {
             }
 
             // create token
-            const token = await AuthHelper.generateToken({ userId: user._id });
+            const token = await JWTService.generateToken({ userId: user._id });
 
             // return the response
             return {
