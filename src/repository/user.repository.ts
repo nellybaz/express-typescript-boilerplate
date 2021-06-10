@@ -8,7 +8,7 @@ import { CrudRepository, IModelFactory } from "./crud.repository";
 
 @injectable()
 export class UserRepositry extends CrudRepository {
-    constructor(@inject(TYPES.IDataSource) dbClient: MongoDBDataSource, @inject(TYPES.IModelFactory) @named('userModel') modelFactory: UserModel) {
+    constructor(@inject(TYPES.IDataSource) dbClient: MongoDBDataSource, @inject(TYPES.IModelFactory) @named('userModel') modelFactory: IModelFactory) {
         super(dbClient, modelFactory);
     }
 } 
