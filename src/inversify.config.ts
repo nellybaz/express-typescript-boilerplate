@@ -1,15 +1,14 @@
 import { Container } from "inversify";
 import { CrudRepository, IModelFactory, SampleRepository } from './repository';
 import TYPES from '../config/types';
-import { SampleService, UserServivce } from './services';
+import { SampleService, UserServivce, InbuiltEmailService, TalentContractService } from './services';
 import { MongoDBDataSource } from './datasources/mongodb.datasource';
-import { InputModifierService, InvoiceRepository, InvoiceService } from "./controllers";
+import { InputModifierService, InvoiceRepository, InvoiceService,  } from './controllers';
 import { UserRepositry } from "./repository/user.repository";
 import { UserModel } from "./model";
 import { TalentContractRepository } from "./repository/talent-contract.repository";
-import { TalentContractService } from "./services/talent-contract.service";
 import { TalentContractModel } from "./model/talent-contract.model";
-import { IDataSource } from "./interfaces";
+import { IDataSource, IEmailService } from "./interfaces";
 
 
 const container = new Container();
@@ -28,6 +27,7 @@ container.bind<IModelFactory>(TYPES.IModelFactory).to(UserModel).whenTargetNamed
 container.bind<TalentContractRepository>(TYPES.TalentContractRepository).to(TalentContractRepository);
 container.bind<TalentContractService>(TYPES.TalentContractService).to(TalentContractService);
 container.bind<IModelFactory>(TYPES.IModelFactory).to(TalentContractModel).whenTargetNamed('talentContractModel');
+container.bind<IEmailService>(TYPES.IEmailService).to(InbuiltEmailService).whenTargetNamed('inbuiltEmailService');
 
  
 export {container}

@@ -1,2 +1,6 @@
 export * from './sample.service'
 export * from './user.service'
+export * from './hash.service'
+export * from './inbuilt-email.service'
+export * from './jwt.service'
+export * from './talent-contract.service'

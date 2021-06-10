@@ -10,9 +10,9 @@ const TYPES = {
     UserServivce: Symbol.for('UserServivce'),
     UserRepositry: Symbol.for('UserRepositry'),
     IModelFactory: Symbol.for('IModelFactory'),
-    // TalentContractModel: Symbol.for('TalentContractModel'),
     TalentContractRepository: Symbol.for('TalentContractRepository'),
-    TalentContractService: Symbol.for('TalentContractService')
+    TalentContractService: Symbol.for('TalentContractService'),
+    IEmailService: Symbol.for('IEmailService')
 };
 
 export default TYPES;
