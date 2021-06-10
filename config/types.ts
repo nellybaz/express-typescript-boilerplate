@@ -8,7 +8,8 @@ const TYPES = {
     InvoiceService: Symbol.for('InvoiceService'),
     InvoiceRepository: Symbol.for('InvoiceRepository'),
     UserServivce: Symbol.for('UserServivce'),
-    UserRepositry: Symbol.for('UserRepositry')
+    UserRepositry: Symbol.for('UserRepositry'),
+    IModelFactory: Symbol.for('IModelFactory')
 };
 
 export default TYPES;

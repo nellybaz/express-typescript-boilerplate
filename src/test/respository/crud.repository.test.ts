@@ -9,7 +9,7 @@ xdescribe('Crud Repository', () => {
     let crudRepo:CrudRepository;
     beforeEach(()=>{
         const dataSource:any = {connect:()=>Boolean, disconnect:()=>Boolean}
-        crudRepo = new CrudRepository(dataSource);
+        crudRepo = new CrudRepository(dataSource, {} as any);
     })
 
     describe('Create', () => {

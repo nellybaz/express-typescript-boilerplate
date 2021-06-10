@@ -1,28 +1,21 @@
 import mongoose, { Model, Schema } from 'mongoose';
-import { IDataSource, IRepository, RepositoryParameter } from '../interfaces';
-import { MongoDBDataSource } from '../datasources/mongodb.datasource';
+import { IDataSource} from '../interfaces';
 import TYPES from '../../config/types';
-import { provide } from 'inversify-binding-decorators';
 import { inject, injectable } from 'inversify';
-// import { SampleSchema } from './sample.repository';
 
-const SampleSchema = new Schema(
-    {
-        email: { type: String, required: true },
-        passwordHash: { type: String, required: true }
-    },
-    { timestamps: true }
-);
+export interface IModelFactory {
+    model: () => Model<any, any, any>;
+}
+
 
 @injectable()
-// implements IRepository
 export class CrudRepository {
-    constructor(@inject(TYPES.MongodbClient) private dbClient: IDataSource) {}
+    constructor(@inject(TYPES.MongodbClient) private dbClient: IDataSource, @inject(TYPES.IModelFactory) private modelFactory: IModelFactory) {}
 
     async create(data: Object) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('User', SampleSchema).create(data);
+            const res = await this.modelFactory.model().create(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -34,7 +27,7 @@ export class CrudRepository {
     async findOne(data: mongoose.FilterQuery<any>) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('User', SampleSchema).findOne(data);
+            const res = await this.modelFactory.model().findOne(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -46,7 +39,7 @@ export class CrudRepository {
     async findById(id: string) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('User', SampleSchema).findById(id);
+            const res = await this.modelFactory.model().findById(id);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -58,7 +51,7 @@ export class CrudRepository {
     async findAll(data?: mongoose.FilterQuery<any>) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('User', SampleSchema).find(data!);
+            const res = await this.modelFactory.model().find(data!);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -70,7 +63,7 @@ export class CrudRepository {
     async updateOne(filter: mongoose.FilterQuery<any>, data: Object) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('User', SampleSchema).updateOne(filter, data);
+            const res = await this.modelFactory.model().updateOne(filter, data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -82,7 +75,7 @@ export class CrudRepository {
     async updateMany(filter: mongoose.FilterQuery<any>, data: Object) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('User', SampleSchema).updateMany(filter, data);
+            const res = await this.modelFactory.model().updateMany(filter, data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -94,7 +87,7 @@ export class CrudRepository {
     async deleteOne(data: mongoose.FilterQuery<any>) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('User', SampleSchema).deleteOne(data);
+            const res = await this.modelFactory.model().deleteOne(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -106,7 +99,7 @@ export class CrudRepository {
     async deleteMany(data: mongoose.FilterQuery<any>) {
         try {
             await this.dbClient.connect();
-            const res = await mongoose.model('User', SampleSchema).deleteMany(data);
+            const res = await this.modelFactory.model().deleteMany(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
@@ -116,6 +109,6 @@ export class CrudRepository {
     }
 
     async modelObject() {
-        return mongoose.model('User', SampleSchema);
+        return this.modelFactory.model();
     }
 }

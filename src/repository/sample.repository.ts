@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import TYPES from '../../config/types';
 import { IDataSource, RepositoryParameter } from '../interfaces';
 const Schema = mongoose.Schema;
-import { CrudRepository } from './crud.repository';
+import { CrudRepository, IModelFactory } from './crud.repository';
 
 export const SampleSchema = new Schema({
     email: { type: String, required: true },
@@ -16,8 +16,8 @@ export const SampleSchema = new Schema({
 
 @injectable()
 export class SampleRepository extends CrudRepository {
-    constructor(@inject(TYPES.MongodbClient) dbClient: IDataSource) {
-        super(dbClient);
+    constructor(@inject(TYPES.MongodbClient) dbClient: IDataSource, @inject(TYPES.IModelFactory) modelFactory: IModelFactory) {
+        super(dbClient, modelFactory);
     }
 
     async complexQuery() {
