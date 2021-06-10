@@ -1,29 +1,27 @@
-import { SampleRepository } from '../repository';
+import { inject, injectable } from 'inversify';
+import { provide } from 'inversify-binding-decorators';
+import TYPES from '../../config/types';
+import { CrudRepository, SampleRepository } from '../repository';
 
+@injectable()
 export class SampleService {
-    _repo: SampleRepository;
-    constructor(repository: SampleRepository) {
-        this._repo = repository;
+    constructor(@inject(TYPES.SampleRepository) private _repo: SampleRepository) {}
+
+    async getAllUsers() {
+        try {
+            return await this._repo.findAll();
+        } catch (error) {
+            return [];
+        }
     }
 
-    async getAllUsers(){
-      try {
-        return await this._repo.findAll();
-      } catch (error) {
-        return [];
-      }
+    async addSample(data: any) {
+        try {
+            return await this._repo.create(data);
+        } catch (error) {}
     }
 
-    async addSample(data:any){
-      // validate data here
-      try {
-        return await this._repo.create(data)
-      } catch (error) {
-        
-      }
-    }
-
-    async complexAction(){
-      return this._repo.complexQuery()
+    async complexAction() {
+        return this._repo.complexQuery();
     }
 }

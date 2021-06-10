@@ -1,113 +1,120 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, Schema } from 'mongoose';
 import { IDataSource, IRepository, RepositoryParameter } from '../interfaces';
 import { MongoDBDataSource } from '../datasources/mongodb.datasource';
+import TYPES from '../../config/types';
+import { provide } from 'inversify-binding-decorators';
+import { inject, injectable } from 'inversify';
+// import { SampleSchema } from './sample.repository';
 
-export class CrudRepository implements IRepository {
-    db: IDataSource;
-    model: Model<any, any, any>;
+const SampleSchema = new Schema({
+    email: { type: String, required: true },
+    passwordHash: { type: String, required: true },
+    createdAt: { type: Date, default: new Date() },
+    updatedAt: { type: Date, default: new Date() }
+});
 
-    constructor({ schema, modelName }: RepositoryParameter) {
-        this.db = new MongoDBDataSource();
-        this.model = mongoose.model(modelName, schema);
-    }
+@injectable()
+// implements IRepository
+export class CrudRepository {
+    constructor(@inject(TYPES.MongodbClient) private dbClient: IDataSource) {}
 
     async create(data: Object) {
         try {
-            await this.db.connect();
-            const res = await this.model.create(data);
-            this.db.disconnect().then((_) => {});
+            await this.dbClient.connect();
+            const res = await mongoose.model('Sample', SampleSchema).create(data);
+            this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
-            this.db.disconnect().then((_) => {});
+            this.dbClient.disconnect().then((_) => {});
             throw Error('Error creating record');
         }
     }
 
     async findOne(data: mongoose.FilterQuery<any>) {
         try {
-            await this.db.connect();
-            const res = await this.model.findOne(data);
-            this.db.disconnect().then((_) => {});
+            await this.dbClient.connect();
+            const res = await mongoose.model('Sample', SampleSchema).findOne(data);
+            this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
-            this.db.disconnect().then((_) => {});
+            this.dbClient.disconnect().then((_) => {});
             throw Error('Error finding one record');
         }
     }
 
     async findById(id: string) {
         try {
-            await this.db.connect();
-            const res = await this.model.findById(id);
-            this.db.disconnect().then((_) => {});
+            await this.dbClient.connect();
+            const res = await mongoose.model('Sample', SampleSchema).findById(id);
+            this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
-            this.db.disconnect().then((_) => {});
+            this.dbClient.disconnect().then((_) => {});
             throw Error('Error finding by Id');
         }
     }
 
     async findAll(data?: mongoose.FilterQuery<any>) {
         try {
-            await this.db.connect();
-            const res = await this.model.find(data!);
-            this.db.disconnect().then((_) => {});
+            await this.dbClient.connect();
+            const res = await mongoose.model('Sample', SampleSchema).find(data!);
+            this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
-            this.db.disconnect().then((_) => {});
+            this.dbClient.disconnect().then((_) => {});
             throw Error('Error finding one record');
         }
     }
 
-    async updateOne(filter: mongoose.FilterQuery<any>, data:Object) {
+    async updateOne(filter: mongoose.FilterQuery<any>, data: Object) {
         try {
-            await this.db.connect();
-            const res = await this.model.updateOne(filter, data);
-            this.db.disconnect().then((_) => {});
+            await this.dbClient.connect();
+            const res = await mongoose.model('Sample', SampleSchema).updateOne(filter, data);
+            this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
-            this.db.disconnect().then((_) => {});
+            this.dbClient.disconnect().then((_) => {});
             throw Error('Error');
         }
     }
 
-    async updateMany(filter: mongoose.FilterQuery<any>, data:Object) {
+    async updateMany(filter: mongoose.FilterQuery<any>, data: Object) {
         try {
-            await this.db.connect();
-            const res = await this.model.updateMany(filter, data);
-            this.db.disconnect().then((_) => {});
+            await this.dbClient.connect();
+            const res = await mongoose.model('Sample', SampleSchema).updateMany(filter, data);
+            this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
-            this.db.disconnect().then((_) => {});
+            this.dbClient.disconnect().then((_) => {});
             throw Error('Error');
         }
     }
 
     async deleteOne(data: mongoose.FilterQuery<any>) {
         try {
-            await this.db.connect();
-            const res = await this.model.deleteOne(data);
-            this.db.disconnect().then((_) => {});
+            await this.dbClient.connect();
+            const res = await mongoose.model('Sample', SampleSchema).deleteOne(data);
+            this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
-            this.db.disconnect().then((_) => {});
+            this.dbClient.disconnect().then((_) => {});
             throw Error('Error');
         }
     }
 
     async deleteMany(data: mongoose.FilterQuery<any>) {
         try {
-            await this.db.connect();
-            const res = await this.model.deleteMany(data);
-            this.db.disconnect().then((_) => {});
+            await this.dbClient.connect();
+            const res = await mongoose.model('Sample', SampleSchema).deleteMany(data);
+            this.dbClient.disconnect().then((_) => {});
             return res;
         } catch (error) {
-            this.db.disconnect().then((_) => {});
+            this.dbClient.disconnect().then((_) => {});
             throw Error('Error');
         }
     }
 
     async modelObject() {
-        return this.model;
+        return mongoose.model('Sample', SampleSchema);
     }
 }

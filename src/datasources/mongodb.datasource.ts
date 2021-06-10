@@ -1,7 +1,9 @@
 import { IDataSource } from '../interfaces';
 import mongoose from 'mongoose';
 import config from '../../config';
+import { injectable } from 'inversify';
 
+@injectable()
 export class MongoDBDataSource implements IDataSource {
     connect = async () => {
         try {
