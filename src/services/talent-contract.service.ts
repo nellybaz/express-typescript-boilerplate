@@ -38,7 +38,7 @@ export class TalentContractService {
             if (this.contract) {
                 console.log('Trying to send email notification!!');
                 
-                const ownerName = 'Talent Name';
+                const ownerName = 'Mike Emeka';
                 const emailBody = `${ownerName} sent you a payment contract. Amount: ${this.contract.currency}${this.contract.amount}`;
                 return await this.emailService.sendEmail({ receiver: this.contract.payerEmail, subject: 'Payment Request', body: emailBody });
             }
