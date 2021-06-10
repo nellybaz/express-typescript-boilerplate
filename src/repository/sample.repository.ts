@@ -1,5 +1,8 @@
+import { inject, injectable } from 'inversify';
+import { provide } from 'inversify-binding-decorators';
 import mongoose from 'mongoose';
-import { RepositoryParameter } from '../interface';
+import TYPES from '../../config/types';
+import { IDataSource, RepositoryParameter } from '../interfaces';
 const Schema = mongoose.Schema;
 import { CrudRepository } from './crud.repository';
 
@@ -10,8 +13,15 @@ export const SampleSchema = new Schema({
     updatedAt: { type: Date, default: new Date() }
 });
 
+
+@injectable()
 export class SampleRepository extends CrudRepository {
-    constructor({ schema, modelName }: RepositoryParameter) {
-        super({ schema, modelName });
+    constructor(@inject(TYPES.MongodbClient) dbClient: IDataSource) {
+        super(dbClient);
+    }
+
+    async complexQuery() {
+        await (await this.modelObject()).findByIdAndUpdate();
     }
 }
+  

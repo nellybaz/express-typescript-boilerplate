@@ -1,7 +1,9 @@
-import { IDataSource } from '../interface';
+import { IDataSource } from '../interfaces';
 import mongoose from 'mongoose';
 import config from '../../config';
+import { injectable } from 'inversify';
 
+@injectable()
 export class MongoDBDataSource implements IDataSource {
     connect = async () => {
         try {
@@ -13,11 +15,11 @@ export class MongoDBDataSource implements IDataSource {
             });
         } catch (error) {
             throw Error('Error connecting to repository datasource');
-        } 
+        }
     };
     disconnect = async () => {
         try {
             await mongoose.connection.close();
-        } catch (error) {}
+        } catch (error) { }
     };
 }

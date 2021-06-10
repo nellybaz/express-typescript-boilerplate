@@ -1,2 +1,2 @@
-export * from './sample.repository'
 export * from './crud.repository'
+export * from './sample.repository'
