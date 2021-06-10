@@ -1,34 +1,40 @@
-import express, { Application, Request, Response, NextFunction } from "express";
-// import bodyParser from 'body-parser';
+import 'reflect-metadata';
+import express, { Application, Request, Response, NextFunction, RequestHandler } from 'express';
 import logging from '../config/logging';
 import config from '../config';
-import Routes from "./routes";
+import Routes from './routes';
+import { container } from './inversify.config';
+import { InversifyExpressServer, BaseMiddleware } from 'inversify-express-utils';
+import './ioc';
 
 
 const NAMESPACE = 'Server';
-const app:Application = express();
-const port = 8000;
+const port = config.server.port;
 
 
-/** Log the request */
+const server = new InversifyExpressServer(container);
+server.setConfig((app) => {
+    app.use(
+        express.urlencoded({
+            extended: true
+        })
+    );
+    app.use(express.json()); 
+    // app.use(helmet());
+});
+
+const app: Application = server.build();
+
 app.use((req:Request, res:Response, next) => {
-    /** Log the req */
     logging.info(NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
     res.on('finish', () => {
-        /** Log the res */
         logging.info(NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`);
     })
-    
+
     next();
 });
 
-/** Parse the body of the request */
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-
-/** Rules of our API */
 app.use((req:Request, res:Response, next:NextFunction) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -41,21 +47,18 @@ app.use((req:Request, res:Response, next:NextFunction) => {
     return next();
 });
 
-
 app.get("/", (_: Request, res: Response) => {
-  res.send(`Server Online on ${new Date()}`)
+    res.send(`Online on ${new Date()}`)
 })
 
-new Routes(app).load()
+new Routes(app).load();
 
-/** Error handling */
-app.use((_:Request, res:Response, __:NextFunction) => {
+app.use((_: Request, res: Response, __: NextFunction) => {
     const error = new Error('Not found');
 
     res.status(404).json({
         message: error.message
     });
 });
-
 
 app.listen(port, () => logging.info(NAMESPACE, `Server is running ${config.server.hostname}:${config.server.port}`));
