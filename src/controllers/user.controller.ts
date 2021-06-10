@@ -1,10 +1,9 @@
 import { Request, Response, Router } from "express";
+import { validateInput } from "../helpers/validator";
+import { loginValidationSchema } from "../middlewares/validationSchema";
 import { UserRepositry } from "../repository/user.repository";
 import { UserServivce } from "../services";
 const router: Router = Router();
-// import Responses from "../utils/response";
-// import { IResponse } from "../interfaces/response.interface";
-
 
 
 const userService = new UserServivce(new UserRepositry());
@@ -21,7 +20,7 @@ router.post("/register", validateInput(loginValidationSchema), async (req: Reque
     const {
         status, error, message, data, statusCode
     } = result;
-    res.status(statusCode).json(Responses.successResponse(status, message, data, error));
+    res.status(statusCode).json({status, message, data, error});
 });
 
 export = router;
