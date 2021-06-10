@@ -9,10 +9,10 @@ export class UserModel implements IModelFactory {
         const SampleSchema = new Schema(
             {
                 email: { type: String, required: true },
-                passwordHash: { type: String, required: true }
+                password: { type: String, required: true }
             },
             { timestamps: true }
         );
-        return mongoose.model('User', SampleSchema);
+        return mongoose.model('Userr', SampleSchema);
     }
 }

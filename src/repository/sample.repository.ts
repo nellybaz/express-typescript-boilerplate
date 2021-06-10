@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { inject, injectable, named } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import mongoose from 'mongoose';
 import TYPES from '../../config/types';
@@ -16,7 +16,7 @@ export const SampleSchema = new Schema({
 
 @injectable()
 export class SampleRepository extends CrudRepository {
-    constructor(@inject(TYPES.MongodbClient) dbClient: IDataSource, @inject(TYPES.IModelFactory) modelFactory: IModelFactory) {
+    constructor(@inject(TYPES.IDataSource) dbClient: IDataSource, @inject(TYPES.IModelFactory) @named('userModel') modelFactory: IModelFactory) {
         super(dbClient, modelFactory);
     }
 

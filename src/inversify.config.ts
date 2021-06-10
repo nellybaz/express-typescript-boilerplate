@@ -9,6 +9,7 @@ import { UserModel } from "./model";
 import { TalentContractRepository } from "./repository/talent-contract.repository";
 import { TalentContractService } from "./services/talent-contract.service";
 import { TalentContractModel } from "./model/talent-contract.model";
+import { IDataSource } from "./interfaces";
 
 
 const container = new Container();
@@ -16,17 +17,17 @@ const container = new Container();
 container.bind<CrudRepository>(TYPES.CrudRepository).to(CrudRepository);
 container.bind<SampleRepository>(TYPES.SampleRepository).to(SampleRepository);
 container.bind<SampleService>(TYPES.SampleService).to(SampleService);
-container.bind<MongoDBDataSource>(TYPES.MongodbClient).to(MongoDBDataSource);
-container.bind<InputModifierService>(TYPES.InputModifier).to(InputModifierService);
+container.bind<IDataSource>(TYPES.IDataSource).to(MongoDBDataSource);
+container.bind<InputModifierService>(TYPES.InputModifierService).to(InputModifierService);
 container.bind<InvoiceService>(TYPES.InvoiceService).to(InvoiceService);
 container.bind<InvoiceRepository>(TYPES.InvoiceRepository).to(InvoiceRepository);
 container.bind<UserRepositry>(TYPES.UserRepositry).to(UserRepositry);
 container.bind<UserServivce>(TYPES.UserServivce).to(UserServivce);
-container.bind<IModelFactory>(TYPES.IModelFactory).to(UserModel);
+container.bind<IModelFactory>(TYPES.IModelFactory).to(UserModel).whenTargetNamed('userModel');
 
 container.bind<TalentContractRepository>(TYPES.TalentContractRepository).to(TalentContractRepository);
 container.bind<TalentContractService>(TYPES.TalentContractService).to(TalentContractService);
-container.bind<IModelFactory>(TYPES.TalentContractModel).to(TalentContractModel);
+container.bind<IModelFactory>(TYPES.IModelFactory).to(TalentContractModel).whenTargetNamed('talentContractModel');
 
-
+ 
 export {container}

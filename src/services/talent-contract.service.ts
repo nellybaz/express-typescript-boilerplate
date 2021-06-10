@@ -8,7 +8,7 @@ export class TalentContractService {
 
     async createContract(data:any){
       try {
-        return await this._repo.create(data);
+        return await this._repo.create({...data, isPaid:false, dueDate: new Date()});
       } catch (error:any) {
         return {
           error: error.message

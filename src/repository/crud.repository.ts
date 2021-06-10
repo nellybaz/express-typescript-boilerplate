@@ -1,7 +1,7 @@
 import mongoose, { Model, Schema } from 'mongoose';
 import { IDataSource} from '../interfaces';
 import TYPES from '../../config/types';
-import { inject, injectable } from 'inversify';
+import { inject, injectable, named } from 'inversify';
 
 export interface IModelFactory {
     model: () => Model<any, any, any>;
@@ -10,7 +10,7 @@ export interface IModelFactory {
 
 @injectable()
 export class CrudRepository {
-    constructor(@inject(TYPES.MongodbClient) private dbClient: IDataSource, @inject(TYPES.IModelFactory) private modelFactory: IModelFactory) {}
+    constructor(@inject(TYPES.IDataSource) private dbClient: IDataSource, @inject(TYPES.IModelFactory) private modelFactory: IModelFactory) {}
 
     async create(data: Object) {
         try {
@@ -18,9 +18,9 @@ export class CrudRepository {
             const res = await this.modelFactory.model().create(data);
             this.dbClient.disconnect().then((_) => {});
             return res;
-        } catch (error) {
+        } catch (error: any) {
             this.dbClient.disconnect().then((_) => {});
-            throw Error('Error creating record');
+            throw Error(error.message);
         }
     }
 
@@ -56,7 +56,7 @@ export class CrudRepository {
             return res;
         } catch (error) {
             this.dbClient.disconnect().then((_) => {});
-            throw Error('Error finding one record');
+            throw Error('Error finding all records');
         }
     }
 

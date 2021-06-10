@@ -14,6 +14,8 @@ export class MongoDBDataSource implements IDataSource {
                 useCreateIndex: true
             });
         } catch (error) {
+            console.log(error);
+            
             throw Error('Error connecting to repository datasource');
         }
     };

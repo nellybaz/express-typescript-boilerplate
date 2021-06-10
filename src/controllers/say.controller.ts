@@ -4,7 +4,7 @@ import {httpGet, controller, httpPost, TYPE} from 'inversify-express-utils'
 import TYPES from '../../config/types';
 
 
-@provide(TYPES.InputModifier)
+@provide(TYPES.InputModifierService)
 export class InputModifierService{
   modify(){
     return {email:'@email.com'}
@@ -14,7 +14,7 @@ export class InputModifierService{
 @controller('/say')
 export class SayController {
 
-    constructor(@inject(TYPES.InputModifier) private inputModifier: InputModifierService){}
+    constructor(@inject(TYPES.InputModifierService) private inputModifier: InputModifierService){}
     @httpGet('/')
     sayHi(req: any, res: any) {
         return res.send('hi');
