@@ -11,7 +11,8 @@ export class InbuiltEmailService implements IEmailService {
             mail.setApiKey(config.server.sendGridKey);
             const msg = {
                 to: data.receiver,
-                from: 'hr@wejapa.com', // Use the email address or domain you verified above
+                from: 'hello@talentmatch.africa',
+                // 'hr@wejapa.com', // Use the email address or domain you verified above
                 subject: data.subject,
                 // text: data.body,
                 html: `
