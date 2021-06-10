@@ -2,6 +2,7 @@ import { injectable } from 'inversify';
 import { IEmailService, ISendEmailBody } from '../interfaces/emailservice.interface';
 import mail from '@sendgrid/mail';
 import config from '../../config';
+import { AnyPtrRecord } from 'dns';
 
 @injectable()
 export class InbuiltEmailService implements IEmailService {
@@ -16,7 +17,11 @@ export class InbuiltEmailService implements IEmailService {
                 // html: '<strong>and easy to do anywhere, even with Node.js</strong>'
             };
             await mail.send(msg);
-        } catch (error) {
+            console.log('Email sent');
+        } catch (error: any) {
+            console.log('Error sending email');
+            console.log(error.message);
+
             return false;
         }
         return true;

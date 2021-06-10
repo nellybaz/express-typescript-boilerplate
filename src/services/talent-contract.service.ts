@@ -15,9 +15,13 @@ export class TalentContractService {
             const currency = createdRecord.currency;
             const amount = createdRecord.amount;
             const emailBody = `${ownerName} sent you a payment contract. Amount: ${currency}${amount}`;
-            if (createdRecord) this.emailService.sendEmail({ receiver: payerEmail, subject: 'Payment Request', body: emailBody });
+            let emailSent = false
+            if (createdRecord) {
+                emailSent = await this.emailService.sendEmail({ receiver: payerEmail, subject: 'Payment Request', body: emailBody });
+            }
+            const emailSentResponseMessage = emailSent ? 'Email sent 👍🏾' : 'Email was not sent to payer. Click on resend email button';
             return {
-                message: 'Contracted created and email sent 👍🏾'
+                message: `Contracted created. ${emailSentResponseMessage}`
             };
         } catch (error: any) {
             return {
