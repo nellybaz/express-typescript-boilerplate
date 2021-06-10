@@ -13,7 +13,9 @@ export class TalentContractService {
     async generate(data: any) {
         try {
             await this.createContract(data);
-            const emailSentResponseMessage = (await this.sendNotificationToPayer()) ? 'Email sent 👍🏾' : 'Email was not sent to payer. Click on resend email button';
+            const notificationSent =await this.sendNotificationToPayer()
+            if(notificationSent) await this.markContractWhenEmailSent()
+            const emailSentResponseMessage = notificationSent ? 'Email sent 👍🏾' : 'Email was not sent to payer. Click on resend email button';
             return {
                 message: `Contracted created. ${emailSentResponseMessage}`
             };
@@ -46,7 +48,7 @@ export class TalentContractService {
         return false;
     }
 
-    async markContractWhenEmailSent(id: string) {
-        await this._repo.updateOne({ _id: id }, { emailSent: true });
+    async markContractWhenEmailSent(){
+        await this._repo.updateOne({ _id: this.contract._id }, { emailSent: true });
     }
 }
