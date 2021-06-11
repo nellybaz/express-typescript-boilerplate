@@ -55,14 +55,78 @@ describe('Talent contract service', () => {
         });
     });
 
-    describe('Sends notification to buyer', ()=>{
-      it('fails to send notification when no contract was created', async ()=>{
-        service.contract = null;
-        expect((await service.sendNotificationToPayer())).to.eq(false)
-      })
-      it('send notification when contract was created', async () => {
-        service.contract = {key:'value'};
-        expect(await service.sendNotificationToPayer()).to.eq(true);
-      });
-    })
+    describe('Sends notification to buyer', () => {
+        it('fails to send notification when no contract was created', async () => {
+            service.contract = null;
+            expect(await service.sendNotificationToPayer()).to.eq(false);
+        });
+        it('send notification when contract was created', async () => {
+            service.contract = { key: 'value' };
+            expect(await service.sendNotificationToPayer()).to.eq(true);
+        });
+    });
+
+    it('marks contract when email sent', async () => {
+        const repo = new TalentContractRepository(new MongoDBDataSource(), new TalentContractModel());
+        try {
+            const data: TalentContractData = {
+                amount: 100,
+                contractName: 'name',
+                currency: '$',
+                description: 'desc',
+                owner: '60c3759fe5b92623acf969bb',
+                payerEmail: 'email@email.com',
+                dueDate: new Date(),
+                emailSent: false,
+                isPaid: true
+            };
+            await service.generate(data);
+            const contratId = service.contract._id;
+            const updatedContract = await repo.findById(contratId);
+            expect(updatedContract.emailSent).to.eq(true);
+        } catch (error) {
+            expect(1).to.eq(2);
+        }
+    });
+
+    it('returns correct responses when email notification sent to payer', async () => {
+        try {
+            const data: TalentContractData = {
+                amount: 100,
+                contractName: 'name',
+                currency: '$',
+                description: 'desc',
+                owner: '60c3759fe5b92623acf969bb',
+                payerEmail: 'email@email.com',
+                dueDate: new Date(),
+                emailSent: false,
+                isPaid: true
+            };
+            const resp = await service.generate(data);
+            expect(resp.message).to.eq('Contracted created. Email sent 👍🏾');
+        } catch (error) {
+            expect(1).to.eq(2);
+        }
+    });
+    it('returns correct responses email notification not sent', async () => {
+        try {
+            const data: TalentContractData = {
+                amount: 100,
+                contractName: 'name',
+                currency: '$',
+                description: 'desc',
+                owner: '60c3759fe5b92623acf969bb',
+                payerEmail: 'email@email.com',
+                dueDate: new Date(),
+                emailSent: false,
+                isPaid: true
+            };
+
+            service = new TalentContractService(new TalentContractRepository(new MongoDBDataSource(), new TalentContractModel()), { sendEmail: () => Promise.resolve(false) });
+            const resp = await service.generate(data);
+            expect(resp.message).to.eq('Contracted created. Email was not sent to payer. Click on resend email button');
+        } catch (error) {
+            expect(1).to.eq(2);
+        }
+    });
 });
