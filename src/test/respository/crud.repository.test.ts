@@ -1,16 +1,19 @@
+import 'reflect-metadata';
 import { expect } from 'chai';
 import 'mocha';
 import dotenv from 'dotenv';
-import { SampleSchema, CrudRepository } from '../../repository';
-import { IDataSource } from '../../interfaces';
+import { CrudRepository } from '../../repository';
+import { MongoDBDataSource } from '../../datasources/mongodb.datasource';
+import { UserModel } from '../../model';
 dotenv.config();
 
-xdescribe('Crud Repository', () => {
-    let crudRepo:CrudRepository;
-    beforeEach(()=>{
-        const dataSource:any = {connect:()=>Boolean, disconnect:()=>Boolean}
-        crudRepo = new CrudRepository(dataSource, {} as any);
-    })
+describe('Crud Repository', () => {
+    let crudRepo: CrudRepository;
+    beforeEach(() => {
+        const userModel = new UserModel()
+        const mongoDbDataSource = new MongoDBDataSource()
+        crudRepo = new CrudRepository(mongoDbDataSource, userModel);
+    });
 
     describe('Create', () => {
         it('creates record', async () => {
@@ -116,7 +119,7 @@ xdescribe('Crud Repository', () => {
             }
         });
     });
-    
+
     describe('UpdateOne', () => {
         it('updates record', async () => {
             // const crudRepo = new CrudRepository();

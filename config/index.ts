@@ -4,7 +4,7 @@ dotenv.config();
 
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
 const SERVER_PORT = process.env.SERVER_PORT || 8000;
-const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/mydb';
+const DB_URL = (process.env.NODE_ENV == 'test' ? process.env.DB_URL_TEST: process.env.DB_URL) || 'mongodb://localhost:27017/mydb';
 const JWT_SECRET = process.env.JWT_SECRET || 'secretkeyHereForDev'
 const SENDGRID_KEY = process.env.SENDGRID_API_KEY || '';
 
