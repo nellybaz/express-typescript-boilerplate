@@ -15,13 +15,13 @@ export class MongoDBDataSource implements IDataSource {
             });
         } catch (error) {
             console.log(error);
-            
+
             throw Error('Error connecting to repository datasource');
         }
     };
     disconnect = async () => {
         try {
             await mongoose.connection.close();
-        } catch (error) { }
+        } catch (error) {}
     };
 }
