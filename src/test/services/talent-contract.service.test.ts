@@ -25,7 +25,7 @@ describe('Talent contract service', () => {
                     contractName: 'name',
                     currency: '$',
                     description: 'desc',
-                    owner: 'owner',
+                    owner: '60c3759fe5b92623acf969bb',
                     payerEmail: 'email@email.com',
                     dueDate: new Date(),
                     emailSent: true,
@@ -33,6 +33,24 @@ describe('Talent contract service', () => {
                 };
                 const created = await service.createContract(data);
                 expect(created).to.eq(true);
+            } catch (error) {
+                expect(1).to.eq(2);
+            }
+        });
+
+        it('throws error with wrong data', async () => {
+            try {
+                const data: TalentContractData = {
+                    amount: 100,
+                    contractName: 'name',
+                    currency: '$',
+                    description: 'desc',
+                    owner: 'owner',
+                    payerEmail: 'email@email.com',
+                    dueDate: new Date()
+                };
+                await service.createContract(data);
+                expect(false).to.eq(true);
             } catch (error) {
                 expect(1).to.eq(1);
             }

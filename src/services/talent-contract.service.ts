@@ -7,7 +7,7 @@ import { TalentContractRepository } from '../repository/talent-contract.reposito
 
 @injectable()
 export class TalentContractService {
-    private contract: any = null;
+    public contract: any = null;
 
     constructor(@inject(TYPES.TalentContractRepository) private _repo: TalentContractRepository, @inject(TYPES.IEmailService) @named('inbuiltEmailService') private emailService: IEmailService) {}
 
