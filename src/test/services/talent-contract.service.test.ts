@@ -2,10 +2,8 @@ import 'reflect-metadata';
 import { expect } from 'chai';
 import 'mocha';
 import dotenv from 'dotenv';
-import { CrudRepository } from '../../repository';
 import { MongoDBDataSource } from '../../datasources/mongodb.datasource';
-import { UserModel } from '../../model';
-import { InbuiltEmailService, TalentContractService } from '../../services';
+import { TalentContractService } from '../../services';
 import { TalentContractData } from '../../interfaces/talent-contract.interface';
 import { TalentContractRepository } from '../../repository/talent-contract.repository';
 import { TalentContractModel } from '../../model/talent-contract.model';
@@ -14,7 +12,7 @@ dotenv.config();
 describe('Talent contract service', () => {
     let service: TalentContractService;
     beforeEach(() => {
-        service = new TalentContractService(new TalentContractRepository(new MongoDBDataSource(), new TalentContractModel()), new InbuiltEmailService());
+        service = new TalentContractService(new TalentContractRepository(new MongoDBDataSource(), new TalentContractModel()), { sendEmail: () => Promise.resolve(true) });
     });
 
     describe('Create', () => {
@@ -56,4 +54,15 @@ describe('Talent contract service', () => {
             }
         });
     });
+
+    describe('Sends notification to buyer', ()=>{
+      it('fails to send notification when no contract was created', async ()=>{
+        service.contract = null;
+        expect((await service.sendNotificationToPayer())).to.eq(false)
+      })
+      it('send notification when contract was created', async () => {
+        service.contract = {key:'value'};
+        expect(await service.sendNotificationToPayer()).to.eq(true);
+      });
+    })
 });
