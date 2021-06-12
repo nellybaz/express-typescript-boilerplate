@@ -27,7 +27,7 @@ export class TalentContractService {
         }
     }
 
-    async createContract(data: TalentContractData):Promise<boolean> {
+    async createContract(data: TalentContractData): Promise<boolean> {
         try {
             this.contract = await this._repo.create({ ...data, isPaid: false, dueDate: new Date(), emailSent: false });
             return true;

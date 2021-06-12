@@ -6,8 +6,28 @@ const stripe = new Stripe('sk_test_51J00Y7A0wYRZlPRCc4KDKLVOEFqMvemcb8z4myx6Ze0H
 
 @controller('/api')
 export class PaymentController {
+
+  /**
+   * receives contract id from the request
+   * 
+   * 
+   * @returns 
+   */
     @httpGet('/stripe')
     async sessionId() {
+      /**
+       * TODO: 
+       * 
+       * 1 write test and clean up this module
+       * 2 store sessionId, mapped to contract and status[paid or not]
+       * 3 retrieve sessionId to get payerEmail and send out email notifications to both talent and payer
+       * 4 checkout stripe webhooks to trigger 3 above
+       * 4 mark contract as paid and other processing
+       * 5 credit user's payday balance
+       * 
+       * 
+       * => contract id should return error to the frontend when trying to get contract details for an already paid contract 
+       */
         try {
             const product = await stripe.products.create({
                 name: `Emeka-Mike<>ABitNetwork-Contract-${new Date().toISOString()}`,
@@ -29,6 +49,7 @@ export class PaymentController {
                 mode: 'payment',
                 customer_email: 'nellybaz10@gmail.com'
             });
+
 
             return {
                 id: session.id
