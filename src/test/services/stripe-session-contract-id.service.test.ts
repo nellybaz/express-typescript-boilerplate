@@ -11,8 +11,10 @@ dotenv.config();
 
 describe('Talent contract service', () => {
     let service: StripeSessionIdContractIdService;
+    let repo: StripeSessionIdContractIdRepository;
     beforeEach(() => {
-        service = new StripeSessionIdContractIdService(new StripeSessionIdContractIdRepository(new MongoDBDataSource(), new StripeSessionIdContractIdModel()));
+        repo = new StripeSessionIdContractIdRepository(new MongoDBDataSource(), new StripeSessionIdContractIdModel());
+        service = new StripeSessionIdContractIdService(repo);
     });
 
     describe('Create', () => {
@@ -27,6 +29,20 @@ describe('Talent contract service', () => {
                 expect(created).to.eq(true);
             } catch (error) {
                 expect(1).to.eq(2);
+            }
+        });
+        it('throws error on failed record creation', async () => {
+            try {
+                repo.create = (data: Object) => Promise.reject({});
+                const data: IStripeSessionIdContractIdData = {
+                    contractId: 'contractId',
+                    stripeSessionId: 'sessionId',
+                    isPaid: false
+                };
+                await service.create(data);
+                expect(false).to.eq(true);
+            } catch (error) {
+                expect(1).to.eq(1);
             }
         });
     });
