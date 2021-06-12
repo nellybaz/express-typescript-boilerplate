@@ -5,6 +5,7 @@ import { StripeSessionIdContractIdRepository } from '../repository/stripe-sessio
 import Stripe from 'stripe';
 import config from '../../config';
 import { TalentContractRepository } from '../repository/talent-contract.repository';
+import { TalentProfileRepository } from '../repository';
 const stripe = new Stripe(config.server.stripeKey, {
     apiVersion: '2020-08-27'
 });
@@ -13,8 +14,15 @@ const stripe = new Stripe(config.server.stripeKey, {
 export class StripePaymentService {
     constructor(
         @inject(TYPES.StripeSessionIdContractIdRepository) private stripeSessionIdRepo: StripeSessionIdContractIdRepository,
-        @inject(TYPES.TalentContractRepository) private contractRepo: TalentContractRepository
+        @inject(TYPES.TalentContractRepository) private contractRepo: TalentContractRepository,
+        @inject(TYPES.TalentProfileRepository) private talentProfileRepository: TalentProfileRepository
     ) {}
+
+    async getContractWithOwnerDetails(contractId: string) {
+        const contract = await this.contractRepo.findById(contractId);
+        const talentProfile = await this.talentProfileRepository.findById(contract.owner);
+        return { ...contract._doc, owner: talentProfile._doc };
+    }
 
     async storeStripeSessionIdWithContractId(data: IStripeSessionIdContractIdData): Promise<boolean> {
         try {
@@ -28,7 +36,7 @@ export class StripePaymentService {
     async createProduct(contractDetails: any) {
         const contractOwnerFirstName = contractDetails.owner.firstName;
         const contractOwnerLastName = contractDetails.owner.lastName;
-        if(!contractOwnerFirstName || !contractOwnerLastName) throw Error('Contract owner name is undefined')
+        if (!contractOwnerFirstName || !contractOwnerLastName) throw Error('Contract owner name is undefined');
         return await stripe.products.create({
             name: `${contractOwnerFirstName}-${contractOwnerLastName}<>Contract`,
             active: true
@@ -38,21 +46,16 @@ export class StripePaymentService {
     async createPrice(product: Stripe.Product, contractDetails: any) {
         return await stripe.prices.create({
             product: product.id,
-            unit_amount: contractDetails.amount,
+            unit_amount: contractDetails.amount * 100,
             currency: 'USD',
-            active: true
+            active: true,
         });
     }
 
     async createSession(data: any) {
         try {
             const { contractId } = data;
-            console.log({contractId});
-            
-            const contractDetails = await this.contractRepo.getContractWithOwnerDetails(contractId);
-
-            console.log({ contractDetails });
-            
+            const contractDetails = await this.getContractWithOwnerDetails(contractId);
 
             const product = await this.createProduct(contractDetails);
 
@@ -83,7 +86,7 @@ export class StripePaymentService {
             console.log(error);
 
             return {
-                error:error.message
+                error: error.message
             };
         }
     }

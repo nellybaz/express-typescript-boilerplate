@@ -1,6 +1,6 @@
 export default {
     talentProfile: 'Talent-Profile',
-    talentContract: 'TalentContract',
+    talentContract: 'Talent-Contract',
     stripeSessionIdContractId: 'Stripe-SessionId-ContractId',
     user: 'User'
 };

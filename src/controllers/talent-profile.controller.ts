@@ -5,12 +5,12 @@ import TYPES from '../../config/types';
 import { TalentProfileService } from '../services/talent-profile.service';
 
 
-@controller('/api/contract')
+@controller('/api/talent')
 export class TalentProfile {
     constructor(@inject(TYPES.TalentProfileService) private talentProfileService: TalentProfileService) {}
 
-    @httpPost('/')
-    create(req: Request, res: Response) {
-        return this.talentProfileService.update(req.body);
+    @httpPost('/create')
+    async create(req: Request, res: Response) {
+        return await this.talentProfileService.create(req.body);
     }
 }
