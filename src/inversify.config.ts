@@ -5,10 +5,12 @@ import { SampleService, UserServivce, InbuiltEmailService, TalentContractService
 import { MongoDBDataSource } from './datasources/mongodb.datasource';
 import { InputModifierService, InvoiceRepository, InvoiceService,  } from './controllers';
 import { UserRepositry } from "./repository/user.repository";
-import { StripeSessionIdContractIdModel, UserModel } from "./model";
+import { StripeSessionIdContractIdModel, TalentProfileModel, UserModel } from "./model";
 import { TalentContractRepository } from "./repository/talent-contract.repository";
 import { TalentContractModel } from "./model/talent-contract.model";
 import { IDataSource, IEmailService } from "./interfaces";
+import { TalentProfileService } from "./services/talent-profile.service";
+import { TalentProfileRepository } from "./repository/talent-profile.repository";
 
 
 const container = new Container();
@@ -33,6 +35,7 @@ container.bind<UserServivce>(TYPES.UserServivce).to(UserServivce);
 container.bind<TalentContractService>(TYPES.TalentContractService).to(TalentContractService);
 container.bind<IEmailService>(TYPES.IEmailService).to(InbuiltEmailService).whenTargetNamed('inbuiltEmailService');
 container.bind<StripePaymentService>(TYPES.StripePaymentService).to(StripePaymentService);
+container.bind<TalentProfileService>(TYPES.TalentProfileService).to(TalentProfileService);
 
 
 /**
@@ -44,6 +47,7 @@ container.bind<TalentContractRepository>(TYPES.TalentContractRepository).to(Tale
 container.bind<UserRepositry>(TYPES.UserRepositry).to(UserRepositry);
 container.bind<InvoiceRepository>(TYPES.InvoiceRepository).to(InvoiceRepository);
 container.bind<StripeSessionIdContractIdRepository>(TYPES.StripeSessionIdContractIdRepository).to(StripeSessionIdContractIdRepository);
+container.bind<TalentProfileRepository>(TYPES.TalentProfileRepository).to(TalentProfileRepository);
 
 
 /**
@@ -52,6 +56,7 @@ container.bind<StripeSessionIdContractIdRepository>(TYPES.StripeSessionIdContrac
 container.bind<IModelFactory>(TYPES.IModelFactory).to(UserModel).whenTargetNamed('userModel');
 container.bind<IModelFactory>(TYPES.IModelFactory).to(TalentContractModel).whenTargetNamed('talentContractModel');
 container.bind<IModelFactory>(TYPES.IModelFactory).to(StripeSessionIdContractIdModel).whenTargetNamed('stripeSessionIdContractIdModel');
+container.bind<IModelFactory>(TYPES.IModelFactory).to(TalentProfileModel).whenTargetNamed('talentProfileModel');
 
 
 

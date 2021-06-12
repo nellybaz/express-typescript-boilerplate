@@ -10,7 +10,7 @@ import { StripeSessionIdContractIdModel, TalentContractModel } from '../../model
 import { TalentContractRepository } from '../../repository/talent-contract.repository';
 dotenv.config();
 
-describe('Talent contract service', () => {
+describe('Stripe payment service', () => {
     let service: StripePaymentService;
     let repo: StripeSessionIdContractIdRepository;
     beforeEach(() => {
@@ -18,7 +18,7 @@ describe('Talent contract service', () => {
         service = new StripePaymentService(repo, new TalentContractRepository(new MongoDBDataSource(), new TalentContractModel()));
     });
 
-    describe('Create', () => {
+    describe('Stripe SessionId with ContractId', () => {
         it('creates contract and stripe session id', async () => {
             try {
                 const data: IStripeSessionIdContractIdData = {
@@ -47,4 +47,16 @@ describe('Talent contract service', () => {
             }
         });
     });
+
+
+        describe('creates sesssion ', () => {
+            it('creates session correctly', async ()=>{
+                const response = await service.createSession({ contractId: '60c37ef34c22c128182fbed6' });
+                console.log(response);
+                
+                expect(response).to.have.property('message');
+                // 'session created successfully';
+            })
+           
+        });
 });

@@ -108,7 +108,11 @@ export class CrudRepository {
         }
     }
 
-    async modelObject() {
+    modelObject() {
         return this.modelFactory.model();
+    }
+
+    dataBaseClient(){
+        return this.dbClient;
     }
 }

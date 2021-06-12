@@ -28,6 +28,7 @@ export class StripePaymentService {
     async createProduct(contractDetails: any) {
         const contractOwnerFirstName = contractDetails.owner.firstName;
         const contractOwnerLastName = contractDetails.owner.lastName;
+        if(!contractOwnerFirstName || !contractOwnerLastName) throw Error('Contract owner name is undefined')
         return await stripe.products.create({
             name: `${contractOwnerFirstName}-${contractOwnerLastName}<>Contract`,
             active: true
@@ -46,7 +47,12 @@ export class StripePaymentService {
     async createSession(data: any) {
         try {
             const { contractId } = data;
+            console.log({contractId});
+            
             const contractDetails = await this.contractRepo.getContractWithOwnerDetails(contractId);
+
+            console.log({ contractDetails });
+            
 
             const product = await this.createProduct(contractDetails);
 
@@ -74,12 +80,10 @@ export class StripePaymentService {
                 error: 'could not create sesssion id'
             };
         } catch (error: any) {
-            console.log('error here');
-
             console.log(error);
 
             return {
-                error
+                error:error.message
             };
         }
     }

@@ -1,3 +1,5 @@
 export * from './crud.repository'
 export * from './sample.repository'
 export * from './stripe-session-contract-id.repository'
+export * from './talent-contract.repository'
+export * from './talent-profile.repository'

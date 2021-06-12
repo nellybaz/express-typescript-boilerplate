@@ -11,6 +11,10 @@ export class TalentContractRepository extends CrudRepository {
     }
 
     async getContractWithOwnerDetails(contractId: string) {
-        return (await this.modelObject()).findById(contractId).populate('owner');
+        await this.dataBaseClient().connect()
+        const model = this.modelObject()
+        const response = await model.findById(contractId).populate('owner')
+        await this.dataBaseClient().disconnect();
+        return response;
     }
 }
