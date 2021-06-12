@@ -46,6 +46,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.11",
     "morgan": "1.9.1",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "stripe": "^8.154.0"
   }
 }
