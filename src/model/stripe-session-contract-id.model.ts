@@ -1,10 +1,11 @@
 import { injectable } from 'inversify';
 import { IModelFactory } from '../repository';
 import mongoose, { Schema } from 'mongoose';
+import modelNames from '../../config/model-names';
 
 const ModelSchema = new Schema(
     {
-        contractId: { type: Schema.Types.ObjectId, ref: 'TalentContract', required: true },
+        contractId: { type: Schema.Types.ObjectId, ref: modelNames.talentContract, required: true },
         stripeSessionId: { type: String, required: true },
         isPaid: { type: Boolean, required: true }
     },
@@ -14,6 +15,6 @@ const ModelSchema = new Schema(
 @injectable()
 export class StripeSessionIdContractIdModel implements IModelFactory {
     model() {
-        return mongoose.model('Stripe-SessionId-ContractId', ModelSchema);
+        return mongoose.model(modelNames.stripeSessionIdContractId, ModelSchema);
     }
 }

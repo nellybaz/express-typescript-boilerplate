@@ -1,6 +1,7 @@
 import { injectable } from 'inversify';
 import { IModelFactory } from '../repository';
 import mongoose, { Schema } from 'mongoose';
+import modelNames from '../../config/model-names';
 
 const schema = new Schema(
     {
@@ -13,8 +14,8 @@ const schema = new Schema(
 );
 
 @injectable()
-export class TalentContractModel implements IModelFactory {
+export class TalentProfileModel implements IModelFactory {
     model() {
-        return mongoose.model('Talent-Profile', schema);
+        return mongoose.model(modelNames.talentProfile, schema);
     }
 }

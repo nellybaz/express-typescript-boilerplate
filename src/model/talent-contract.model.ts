@@ -1,13 +1,14 @@
 import { injectable } from 'inversify';
 import { IModelFactory } from '../repository';
 import mongoose, { Schema } from 'mongoose';
+import modelNames from '../../config/model-names';
 
 
 const TalentContractSchema = new Schema(
     {
         amount: { type: Number, required: true },
         payerEmail: { type: String, required: true },
-        owner: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+        owner: { type: Schema.Types.ObjectId, required: true, ref: modelNames.talentProfile},
         dueDate: { type: Date, required: true },
         currency: { type: String, required: true },
         isPaid: { type: Boolean, required: true },
@@ -22,6 +23,6 @@ const TalentContractSchema = new Schema(
 @injectable()
 export class TalentContractModel implements IModelFactory {
     model() {
-        return mongoose.model('TalentContract', TalentContractSchema);
+        return mongoose.model(modelNames.talentContract, TalentContractSchema);
     }
 }
