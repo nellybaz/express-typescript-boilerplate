@@ -25,23 +25,32 @@ export class StripePaymentService {
         }
     }
 
+    async createProduct(contractDetails: any) {
+        const contractOwnerFirstName = contractDetails.owner.firstName;
+        const contractOwnerLastName = contractDetails.owner.lastName;
+        return await stripe.products.create({
+            name: `${contractOwnerFirstName}-${contractOwnerLastName}<>Contract`,
+            active: true
+        });
+    }
+
+    async createPrice(product: Stripe.Product, contractDetails: any) {
+        return await stripe.prices.create({
+            product: product.id,
+            unit_amount: contractDetails.amount,
+            currency: 'USD',
+            active: true
+        });
+    }
+
     async createSession(data: any) {
         try {
             const { contractId } = data;
             const contractDetails = await this.contractRepo.getContractWithOwnerDetails(contractId);
 
-            // const contractOwner = contractDetails.
-            const product = await stripe.products.create({
-                name: `Emeka-Mike<>ABitNetwork-Contract-${new Date().toISOString()}`,
-                active: true
-            });
+            const product = await this.createProduct(contractDetails);
 
-            const price = await stripe.prices.create({
-                product: product.id,
-                unit_amount: 1000,
-                currency: 'USD',
-                active: true
-            });
+            const price = await this.createPrice(product, contractDetails);
 
             const session = await stripe.checkout.sessions.create({
                 success_url: 'https://www.mypayday.africa',
@@ -49,7 +58,7 @@ export class StripePaymentService {
                 payment_method_types: ['card'],
                 line_items: [{ price: price.id, quantity: 1 }],
                 mode: 'payment',
-                customer_email: 'nellybaz10@gmail.com'
+                customer_email: contractDetails.payerEmail
             });
 
             const mapSessionIdToContractId = await this.storeStripeSessionIdWithContractId({ stripeSessionId: session.id, contractId: contractId, isPaid: false });
