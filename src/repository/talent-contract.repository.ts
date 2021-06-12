@@ -10,4 +10,8 @@ export class TalentContractRepository extends CrudRepository {
     constructor(@inject(TYPES.IDataSource) dbClient: MongoDBDataSource, @inject(TYPES.IModelFactory) @named('talentContractModel') modelFactory: TalentContractModel) {
         super(dbClient, modelFactory);
     }
+
+    async getContractWithOwnerDetails(contractId: string) {
+        return (await this.modelObject()).findById(contractId).populate('owner');
+    }
 }

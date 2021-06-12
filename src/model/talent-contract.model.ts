@@ -22,9 +22,6 @@ const TalentContractSchema = new Schema(
 @injectable()
 export class TalentContractModel implements IModelFactory {
     model() {
-        // -amount - payerEmail - owner[userId] - dueDate - currency - isPaid - createdAt - name - description;
-
-        
         return mongoose.model('TalentContract', TalentContractSchema);
     }
 }

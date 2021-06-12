@@ -6,7 +6,8 @@ import { StripePaymentService } from '../../services';
 import { IStripeSessionIdContractIdData } from '../../interfaces/stripe-contract-id.interface';
 import { StripeSessionIdContractIdRepository } from '../../repository/stripe-session-contract-id.repository';
 import { MongoDBDataSource } from '../../datasources/mongodb.datasource';
-import { StripeSessionIdContractIdModel } from '../../model';
+import { StripeSessionIdContractIdModel, TalentContractModel } from '../../model';
+import { TalentContractRepository } from '../../repository/talent-contract.repository';
 dotenv.config();
 
 describe('Talent contract service', () => {
@@ -14,14 +15,14 @@ describe('Talent contract service', () => {
     let repo: StripeSessionIdContractIdRepository;
     beforeEach(() => {
         repo = new StripeSessionIdContractIdRepository(new MongoDBDataSource(), new StripeSessionIdContractIdModel());
-        service = new StripePaymentService(repo);
+        service = new StripePaymentService(repo, new TalentContractRepository(new MongoDBDataSource(), new TalentContractModel()));
     });
 
     describe('Create', () => {
         it('creates contract and stripe session id', async () => {
             try {
                 const data: IStripeSessionIdContractIdData = {
-                    contractId: 'contractId',
+                    contractId: '60c3759fe5b92623acf969bb',
                     stripeSessionId: 'sessionId',
                     isPaid: false
                 };
