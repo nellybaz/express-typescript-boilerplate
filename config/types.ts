@@ -13,7 +13,8 @@ const TYPES = {
     TalentContractRepository: Symbol.for('TalentContractRepository'),
     TalentContractService: Symbol.for('TalentContractService'),
     IEmailService: Symbol.for('IEmailService'),
-    StripeSessionIdContractIdRepository: Symbol.for('StripeSessionIdContractIdRepository')
+    StripeSessionIdContractIdRepository: Symbol.for('StripeSessionIdContractIdRepository'),
+    StripePaymentService: Symbol.for('StripePaymentService')
 };
 
 export default TYPES;

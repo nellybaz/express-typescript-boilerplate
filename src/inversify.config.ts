@@ -1,7 +1,7 @@
 import { Container } from "inversify";
-import { CrudRepository, IModelFactory, SampleRepository } from './repository';
+import { CrudRepository, IModelFactory, SampleRepository, StripeSessionIdContractIdRepository } from './repository';
 import TYPES from '../config/types';
-import { SampleService, UserServivce, InbuiltEmailService, TalentContractService } from './services';
+import { SampleService, UserServivce, InbuiltEmailService, TalentContractService, StripePaymentService } from './services';
 import { MongoDBDataSource } from './datasources/mongodb.datasource';
 import { InputModifierService, InvoiceRepository, InvoiceService,  } from './controllers';
 import { UserRepositry } from "./repository/user.repository";
@@ -32,6 +32,7 @@ container.bind<InvoiceService>(TYPES.InvoiceService).to(InvoiceService);
 container.bind<UserServivce>(TYPES.UserServivce).to(UserServivce);
 container.bind<TalentContractService>(TYPES.TalentContractService).to(TalentContractService);
 container.bind<IEmailService>(TYPES.IEmailService).to(InbuiltEmailService).whenTargetNamed('inbuiltEmailService');
+container.bind<StripePaymentService>(TYPES.StripePaymentService).to(StripePaymentService);
 
 
 /**
@@ -42,6 +43,7 @@ container.bind<CrudRepository>(TYPES.CrudRepository).to(CrudRepository);
 container.bind<TalentContractRepository>(TYPES.TalentContractRepository).to(TalentContractRepository);
 container.bind<UserRepositry>(TYPES.UserRepositry).to(UserRepositry);
 container.bind<InvoiceRepository>(TYPES.InvoiceRepository).to(InvoiceRepository);
+container.bind<StripeSessionIdContractIdRepository>(TYPES.StripeSessionIdContractIdRepository).to(StripeSessionIdContractIdRepository);
 
 
 /**

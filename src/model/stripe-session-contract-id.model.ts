@@ -4,7 +4,7 @@ import mongoose, { Schema } from 'mongoose';
 
 const ModelSchema = new Schema(
     {
-        contractId: { type: String, required: true },
+        contractId: { type: Schema.Types.ObjectId, ref: 'TalentContract', required: true },
         stripeSessionId: { type: String, required: true },
         isPaid: { type: Boolean, required: true }
     },
