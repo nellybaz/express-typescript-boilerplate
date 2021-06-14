@@ -20,11 +20,11 @@ export function verifyAuth(options: any) {
                 }
             } catch (error) {}
 
-            const resonseObject = {
+            const responseObject = {
                 error: 'Unauthorized',
-                status: 400
+                status: 401
             };
-            return resonseObject;
+            return res.status(401).json(responseObject);
         };
         return descriptor;
     };
