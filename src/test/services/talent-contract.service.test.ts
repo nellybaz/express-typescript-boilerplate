@@ -144,6 +144,6 @@ describe('Talent contract service', () => {
              isPaid: true
          };
          await service.createContract(data);
-        expect(await (service.markContractAsPaid())).to.eq(true);
+        expect(await (service.markContractAsPaid(service.contract._id))).to.eq(true);
     })
 });

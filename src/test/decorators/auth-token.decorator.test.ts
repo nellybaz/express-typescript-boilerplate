@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 import { expect } from 'chai';
-import { verifyAuth } from '../../decorators/auth-token.decorator';
+import { authenticate } from '../../decorators/authenticate.decorator';
 import 'mocha';
 import dotenv from 'dotenv';
 dotenv.config();
 
 class SomeController {
 
-    @verifyAuth({ userId: 'abc' })
+    @authenticate({ userId: 'abc' })
     doWithVerifyToken(req: any, res: any) {
         return req.body;
     }

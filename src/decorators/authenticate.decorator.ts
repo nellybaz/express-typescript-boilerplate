@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-export function verifyAuth(options: any) {
+export function authenticate(options: any) {
     return (_: any, __: PropertyKey, descriptor: TypedPropertyDescriptor<any>) => {
         const originalFunc = descriptor.value;
 

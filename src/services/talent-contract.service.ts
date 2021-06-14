@@ -10,7 +10,7 @@ export class TalentContractService {
 
     constructor(@inject(TYPES.TalentContractRepository) private _repo: TalentContractRepository, @inject(TYPES.IEmailService) @named('inbuiltEmailService') private emailService: IEmailService) {}
 
-    async generate(data:any) {
+    async generate(data: any) {
         try {
             const contract: ITalentContractData = {
                 ...data,
@@ -55,8 +55,12 @@ export class TalentContractService {
         await this._repo.updateOne({ _id: this.contract._id }, { emailSent: true });
     }
 
-    async markContractAsPaid(){
-        const resp = await this._repo.updateOne({ _id: this.contract._id }, { isPaid: true });
-        return resp != undefined
+    async markContractAsPaid(contractId: string): Promise<boolean> {
+        const resp = await this._repo.updateOne({ _id: contractId }, { isPaid: true });
+        return resp != undefined;
+    }
+
+    async processPaidContract(data: any) {
+        const { contractId, userId } = data;
     }
 }
