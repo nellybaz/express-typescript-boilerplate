@@ -16,7 +16,9 @@ const TYPES = {
     StripeSessionIdContractIdRepository: Symbol.for('StripeSessionIdContractIdRepository'),
     StripePaymentService: Symbol.for('StripePaymentService'),
     TalentProfileService: Symbol.for('TalentProfileService'),
-    TalentProfileRepository: Symbol.for('TalentProfileRepository')
+    TalentProfileRepository: Symbol.for('TalentProfileRepository'),
+    WalletRepository: Symbol.for('WalletRepository'),
+    WalletService: Symbol.for('WalletService')
 };
 
 export default TYPES;

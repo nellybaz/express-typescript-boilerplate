@@ -1,16 +1,17 @@
 import { Container } from "inversify";
 import { CrudRepository, IModelFactory, SampleRepository, StripeSessionIdContractIdRepository } from './repository';
 import TYPES from '../config/types';
-import { SampleService, UserServivce, InbuiltEmailService, TalentContractService, StripePaymentService } from './services';
+import { SampleService, UserServivce, InbuiltEmailService, TalentContractService, StripePaymentService, WalletService } from './services';
 import { MongoDBDataSource } from './datasources/mongodb.datasource';
 import { InputModifierService, InvoiceRepository, InvoiceService,  } from './controllers';
 import { UserRepositry } from "./repository/user.repository";
-import { StripeSessionIdContractIdModel, TalentProfileModel, UserModel } from "./model";
+import { StripeSessionIdContractIdModel, TalentProfileModel, UserModel, WalletModel } from "./model";
 import { TalentContractRepository } from "./repository/talent-contract.repository";
 import { TalentContractModel } from "./model/talent-contract.model";
 import { IDataSource, IEmailService } from "./interfaces";
 import { TalentProfileService } from "./services/talent-profile.service";
 import { TalentProfileRepository } from "./repository/talent-profile.repository";
+import { WalletRepository } from "./repository/wallet.repository";
 
 
 const container = new Container();
@@ -36,6 +37,7 @@ container.bind<TalentContractService>(TYPES.TalentContractService).to(TalentCont
 container.bind<IEmailService>(TYPES.IEmailService).to(InbuiltEmailService).whenTargetNamed('inbuiltEmailService');
 container.bind<StripePaymentService>(TYPES.StripePaymentService).to(StripePaymentService);
 container.bind<TalentProfileService>(TYPES.TalentProfileService).to(TalentProfileService);
+container.bind<WalletService>(TYPES.WalletService).to(WalletService);
 
 
 /**
@@ -48,6 +50,7 @@ container.bind<UserRepositry>(TYPES.UserRepositry).to(UserRepositry);
 container.bind<InvoiceRepository>(TYPES.InvoiceRepository).to(InvoiceRepository);
 container.bind<StripeSessionIdContractIdRepository>(TYPES.StripeSessionIdContractIdRepository).to(StripeSessionIdContractIdRepository);
 container.bind<TalentProfileRepository>(TYPES.TalentProfileRepository).to(TalentProfileRepository);
+container.bind<WalletRepository>(TYPES.WalletRepository).to(WalletRepository);
 
 
 /**
@@ -57,6 +60,7 @@ container.bind<IModelFactory>(TYPES.IModelFactory).to(UserModel).whenTargetNamed
 container.bind<IModelFactory>(TYPES.IModelFactory).to(TalentContractModel).whenTargetNamed('talentContractModel');
 container.bind<IModelFactory>(TYPES.IModelFactory).to(StripeSessionIdContractIdModel).whenTargetNamed('stripeSessionIdContractIdModel');
 container.bind<IModelFactory>(TYPES.IModelFactory).to(TalentProfileModel).whenTargetNamed('talentProfileModel');
+container.bind<IModelFactory>(TYPES.IModelFactory).to(WalletModel).whenTargetNamed('walletModel');
 
 
 

@@ -5,8 +5,8 @@ import modelNames from '../../config/model-names';
 
 const schema = new Schema(
     {
-        userId: { type: Schema.Types.ObjectId, unique:true, required: true },
-        amount: { type: Number, required: true }
+        userId: { type: Schema.Types.ObjectId, unique: true, required: true, dropDups: true },
+        amount: { type: Number, required: true}
     },
     { timestamps: true }
 );
