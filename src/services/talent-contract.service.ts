@@ -67,6 +67,12 @@ export class TalentContractService {
     }
 
     async processPaidContract(data: any): Promise<{ message?: string; error?: string }> {
+        /**
+         *
+         * TODO: verify session with stripe if paid successfully
+         * TODO: identify on contract what payment module was used
+         */
+
         try {
             const { contractId } = data;
             const contract = await this._repo.findById(contractId);
