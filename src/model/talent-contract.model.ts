@@ -8,9 +8,9 @@ const TalentContractSchema = new Schema(
     {
         amount: { type: Number, required: true },
         payerEmail: { type: String, required: true },
-        owner: { type: Schema.Types.ObjectId, required: true, ref: modelNames.talentProfile},
+        owner: { type: Schema.Types.ObjectId, required: true, ref: modelNames.talentProfile },
         dueDate: { type: Date, required: true },
-        currency: { type: String, required: true },
+        currency: { type: String, enum: ['$', '₦'], default: '$', required: true },
         isPaid: { type: Boolean, required: true },
         contractName: { type: String, required: true },
         description: { type: String, required: true },
