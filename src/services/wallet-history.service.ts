@@ -2,17 +2,22 @@ import { inject } from 'inversify';
 import TYPES from '../../config/types';
 import { WalletHistoryRepository } from '../repository';
 
+export interface IWalletHistory {
+    amount: number;
+    userId: string;
+    caller: string;
+    type: string;
+}
 
 export class WalletHistoryService {
     constructor(@inject(TYPES.TalentContractRepository) private _repo: WalletHistoryRepository) {}
 
-    async create(data: any) {
+    async create(data: IWalletHistory) {
         try {
-            const amount = -1 * parseInt(data.amount.toString());
-            return await this._repo.create({ userId: data.userId, amount: amount, caller:'', type:'' });
+            const response = await this._repo.create({ userId: data.userId, amount: data.amount, caller: data.caller, type: data.type });
+            return response != undefined;
         } catch (error) {
             return false;
         }
     }
-
 }
