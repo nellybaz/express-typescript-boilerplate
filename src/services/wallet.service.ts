@@ -3,6 +3,11 @@ import TYPES from '../../config/types';
 import { WalletRepository } from '../repository';
 import { WalletHistoryService } from './wallet-history.service';
 
+export interface IWalletData {
+    userId: string;
+    amount: number;
+}
+
 //TODO: credit and debit should be transactions taking other atomic operations as parameters
 export class WalletService {
     constructor(@inject(TYPES.TalentContractRepository) private _repo: WalletRepository, @inject(TYPES.WalletHistoryService) private _walletHistoryService: WalletHistoryService) {}
@@ -11,29 +16,35 @@ export class WalletService {
         return await this._repo.create({ userId, amount: 0 });
     }
 
-    async credit(data: any) {
+    async credit(data: IWalletData) {
         try {
             const amount = parseInt(data.amount.toString());
             const history = await this._walletHistoryService.create({ userId: data.userId, amount, caller: 'contract', type: 'credit' });
-            if (history) return await this._repo.credit({ userId: data.userId, amount: amount });
-            return {
-                error: 'Could not credit user'
-            };
+            if (history) {
+                const record = await this._repo.updateWallet({ userId: data.userId, amount: amount });
+                console.log({ record });
+                if (!record) throw Error('Could not credit user');
+                return record;
+            }
         } catch (error) {
-            return false;
+            console.log(error);
         }
+        throw Error('Could not credit user');
     }
-    async debit(data: any) {
+    async debit(data: IWalletData) {
         try {
             const amount = -1 * parseInt(data.amount.toString());
             const history = await this._walletHistoryService.create({ userId: data.userId, amount: Math.abs(amount), caller: 'contract', type: 'debit' });
-            if (history) return await this._repo.credit({ userId: data.userId, amount: amount });
-            return {
-                error: 'Could not credit user'
-            };
+            if (history) {
+                const record = await this._repo.updateWallet({ userId: data.userId, amount: amount });
+                console.log({ record });
+                if (!record) throw Error('Could not debit user');
+                return record;
+            }
         } catch (error) {
-            return false;
+            console.log(error);
         }
+        throw Error('Could not credit user');
     }
 
     async fetch(userId: string) {

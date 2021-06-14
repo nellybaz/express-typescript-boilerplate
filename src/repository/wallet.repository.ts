@@ -14,13 +14,14 @@ export class WalletRepository extends CrudRepository {
         super(dbClient, modelFactory);
     }
 
-    async credit(data: ICreditObject) {
+    async updateWallet(data: ICreditObject) {
         try {
             await this.dataBaseClient().connect();
             const response = await this.modelObject().findOneAndUpdate({ userId: data.userId }, { $inc: { amount: data.amount } });
             await this.dataBaseClient().disconnect();
             return response != undefined;
         } catch (error) {
+            console.log(error);
             return false;
         }
     }

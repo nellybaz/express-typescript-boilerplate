@@ -15,7 +15,7 @@ export class TalentContract {
         return this.talentContractService.generate(req.body);
     }
 
-    @httpPost('/')
+    @httpPost('/paid')
     @authenticate({})
     @authorize({})
     markPaid(req: Request, res: Response) {

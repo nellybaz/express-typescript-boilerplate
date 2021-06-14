@@ -3,12 +3,17 @@ import TYPES from '../../config/types';
 import { IEmailService } from '../interfaces/emailservice.interface';
 import { ITalentContractData } from '../interfaces/talent-contract.interface';
 import { TalentContractRepository } from '../repository/talent-contract.repository';
+import { WalletService } from './wallet.service';
 
 @injectable()
 export class TalentContractService {
     public contract: any = null;
 
-    constructor(@inject(TYPES.TalentContractRepository) private _repo: TalentContractRepository, @inject(TYPES.IEmailService) @named('inbuiltEmailService') private emailService: IEmailService) {}
+    constructor(
+        @inject(TYPES.TalentContractRepository) private _repo: TalentContractRepository,
+        @inject(TYPES.IEmailService) @named('inbuiltEmailService') private emailService: IEmailService,
+        @inject(TYPES.WalletHistoryService) private _walletService: WalletService
+    ) {}
 
     async generate(data: any) {
         try {
@@ -21,7 +26,8 @@ export class TalentContractService {
             if (notificationSent) await this.markContractWhenEmailSent();
             const emailSentResponseMessage = notificationSent ? 'Email sent 👍🏾' : 'Email was not sent to payer. Click on resend email button';
             return {
-                message: `Contracted created. ${emailSentResponseMessage}`
+                message: `Contracted created. ${emailSentResponseMessage}`,
+                data: this.contract
             };
         } catch (error: any) {
             return {
@@ -60,7 +66,29 @@ export class TalentContractService {
         return resp != undefined;
     }
 
-    async processPaidContract(data: any) {
-        const { contractId, userId } = data;
+    async processPaidContract(data: any): Promise<{ message?: string; error?: string }> {
+        try {
+            const { contractId } = data;
+            const contract = await this._repo.findById(contractId);
+            if (!contract) return { error: `No contract found for ${contractId}` };
+            const marked = await this.markContractAsPaid(contractId);
+
+            if (marked) {
+                await this._walletService.credit({ userId: contract.owner, amount: contract.amount });
+                try {
+                    // send emails here
+                } catch (error) {}
+
+                return {
+                    message: 'Contract payment processed successfully'
+                };
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+        return {
+            error: 'Error occurred trying to complete contract payment process'
+        };
     }
 }

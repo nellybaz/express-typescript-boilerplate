@@ -9,7 +9,7 @@ export function authorize(options: any) {
             const res: Response = arguments[1];
            
             try {
-              /**
+              /**IDOR
                * get collection name and userId
                * check if userId has right on the resource
                */

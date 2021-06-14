@@ -1,4 +1,4 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import TYPES from '../../config/types';
 import { WalletHistoryRepository } from '../repository';
 
@@ -9,6 +9,8 @@ export interface IWalletHistory {
     type: string;
 }
 
+
+@injectable()
 export class WalletHistoryService {
     constructor(@inject(TYPES.TalentContractRepository) private _repo: WalletHistoryRepository) {}
 
