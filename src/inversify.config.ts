@@ -1,7 +1,7 @@
 import { Container } from "inversify";
-import { CrudRepository, IModelFactory, SampleRepository, StripeSessionIdContractIdRepository } from './repository';
+import { CrudRepository, IModelFactory, SampleRepository, StripeSessionIdContractIdRepository, WalletHistoryRepository, WalletRepository } from './repository';
 import TYPES from '../config/types';
-import { SampleService, UserServivce, InbuiltEmailService, TalentContractService, StripePaymentService, WalletService } from './services';
+import { SampleService, UserServivce, InbuiltEmailService, TalentContractService, StripePaymentService, WalletService, WalletHistoryService } from './services';
 import { MongoDBDataSource } from './datasources/mongodb.datasource';
 import { InputModifierService, InvoiceRepository, InvoiceService,  } from './controllers';
 import { UserRepositry } from "./repository/user.repository";
@@ -11,7 +11,6 @@ import { TalentContractModel } from "./model/talent-contract.model";
 import { IDataSource, IEmailService } from "./interfaces";
 import { TalentProfileService } from "./services/talent-profile.service";
 import { TalentProfileRepository } from "./repository/talent-profile.repository";
-import { WalletRepository } from "./repository/wallet.repository";
 
 
 const container = new Container();
@@ -38,6 +37,7 @@ container.bind<IEmailService>(TYPES.IEmailService).to(InbuiltEmailService).whenT
 container.bind<StripePaymentService>(TYPES.StripePaymentService).to(StripePaymentService);
 container.bind<TalentProfileService>(TYPES.TalentProfileService).to(TalentProfileService);
 container.bind<WalletService>(TYPES.WalletService).to(WalletService);
+container.bind<WalletHistoryService>(TYPES.WalletHistoryService).to(WalletHistoryService);
 
 
 /**
@@ -51,6 +51,7 @@ container.bind<InvoiceRepository>(TYPES.InvoiceRepository).to(InvoiceRepository)
 container.bind<StripeSessionIdContractIdRepository>(TYPES.StripeSessionIdContractIdRepository).to(StripeSessionIdContractIdRepository);
 container.bind<TalentProfileRepository>(TYPES.TalentProfileRepository).to(TalentProfileRepository);
 container.bind<WalletRepository>(TYPES.WalletRepository).to(WalletRepository);
+container.bind<WalletHistoryRepository>(TYPES.WalletHistoryRepository).to(WalletHistoryRepository);
 
 
 /**
@@ -61,6 +62,7 @@ container.bind<IModelFactory>(TYPES.IModelFactory).to(TalentContractModel).whenT
 container.bind<IModelFactory>(TYPES.IModelFactory).to(StripeSessionIdContractIdModel).whenTargetNamed('stripeSessionIdContractIdModel');
 container.bind<IModelFactory>(TYPES.IModelFactory).to(TalentProfileModel).whenTargetNamed('talentProfileModel');
 container.bind<IModelFactory>(TYPES.IModelFactory).to(WalletModel).whenTargetNamed('walletModel');
+container.bind<IModelFactory>(TYPES.IModelFactory).to(WalletModel).whenTargetNamed('walletHistoryModel');
 
 
 

@@ -2,8 +2,6 @@ import { inject } from 'inversify';
 import TYPES from '../../config/types';
 import { WalletRepository } from '../repository/wallet.repository';
 
-
-
 //TODO: credit and debit should be transactions taking other atomic operations as parameters
 export class WalletService {
     constructor(@inject(TYPES.TalentContractRepository) private _repo: WalletRepository) {}
@@ -14,7 +12,16 @@ export class WalletService {
 
     async credit(data: any) {
         try {
-            return await this._repo.credit({ userId: data.userId, amount: data.amount });
+            const amount = parseInt(data.amount.toString());
+            return await this._repo.credit({ userId: data.userId, amount: amount });
+        } catch (error) {
+            return false;
+        }
+    }
+    async debit(data: any) {
+        try {
+            const amount = -1 * parseInt(data.amount.toString());
+            return await this._repo.credit({ userId: data.userId, amount: amount });
         } catch (error) {
             return false;
         }

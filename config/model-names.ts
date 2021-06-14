@@ -3,5 +3,6 @@ export default {
     talentContract: 'Talent-Contract',
     stripeSessionIdContractId: 'Stripe-SessionId-ContractId',
     user: 'User',
-    wallet:'Wallet'
+    wallet:'Wallet',
+    walletHistory:'Wallet-History'
 };

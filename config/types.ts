@@ -18,7 +18,9 @@ const TYPES = {
     TalentProfileService: Symbol.for('TalentProfileService'),
     TalentProfileRepository: Symbol.for('TalentProfileRepository'),
     WalletRepository: Symbol.for('WalletRepository'),
-    WalletService: Symbol.for('WalletService')
+    WalletService: Symbol.for('WalletService'),
+    WalletHistoryRepository: Symbol.for('WalletHistoryRepository'),
+    WalletHistoryService: Symbol.for('WalletHistoryService')
 };
 
 export default TYPES;
