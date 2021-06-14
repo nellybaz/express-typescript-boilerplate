@@ -4,7 +4,7 @@ import 'mocha';
 import dotenv from 'dotenv';
 import { MongoDBDataSource } from '../../datasources/mongodb.datasource';
 import { TalentContractService } from '../../services';
-import { TalentContractData } from '../../interfaces/talent-contract.interface';
+import { ITalentContractData } from '../../interfaces/talent-contract.interface';
 import { TalentContractRepository } from '../../repository/talent-contract.repository';
 import { TalentContractModel } from '../../model/talent-contract.model';
 dotenv.config();
@@ -18,7 +18,7 @@ describe('Talent contract service', () => {
     describe('Create', () => {
         it('creates contract for right data', async () => {
             try {
-                const data: TalentContractData = {
+                const data: ITalentContractData = {
                     amount: 100,
                     contractName: 'name',
                     currency: '$',
@@ -38,7 +38,7 @@ describe('Talent contract service', () => {
 
         it('throws error with wrong data', async () => {
             try {
-                const data: TalentContractData = {
+                const data: ITalentContractData = {
                     amount: 100,
                     contractName: 'name',
                     currency: '$',
@@ -69,12 +69,12 @@ describe('Talent contract service', () => {
     it('marks contract when email sent', async () => {
         const repo = new TalentContractRepository(new MongoDBDataSource(), new TalentContractModel());
         try {
-            const data: TalentContractData = {
+            const data = {
                 amount: 100,
                 contractName: 'name',
                 currency: '$',
                 description: 'desc',
-                owner: '60c3759fe5b92623acf969bb',
+                userId: '60c3759fe5b92623acf969bb',
                 payerEmail: 'email@email.com',
                 dueDate: new Date(),
                 emailSent: false,
@@ -91,12 +91,12 @@ describe('Talent contract service', () => {
 
     it('returns correct responses when email notification sent to payer', async () => {
         try {
-            const data: TalentContractData = {
+            const data = {
                 amount: 100,
                 contractName: 'name',
                 currency: '$',
                 description: 'desc',
-                owner: '60c3759fe5b92623acf969bb',
+                userId: '60c3759fe5b92623acf969bb',
                 payerEmail: 'email@email.com',
                 dueDate: new Date(),
                 emailSent: false,
@@ -110,12 +110,12 @@ describe('Talent contract service', () => {
     });
     it('returns correct responses email notification not sent', async () => {
         try {
-            const data: TalentContractData = {
+            const data = {
                 amount: 100,
                 contractName: 'name',
                 currency: '$',
                 description: 'desc',
-                owner: '60c3759fe5b92623acf969bb',
+                userId: '60c3759fe5b92623acf969bb',
                 payerEmail: 'email@email.com',
                 dueDate: new Date(),
                 emailSent: false,
@@ -129,4 +129,21 @@ describe('Talent contract service', () => {
             expect(1).to.eq(2);
         }
     });
+
+    it('marks contract as paid', async ()=>{
+        service = new TalentContractService(new TalentContractRepository(new MongoDBDataSource(), new TalentContractModel()), { sendEmail: () => Promise.resolve(false) });
+         const data: ITalentContractData = {
+             amount: 100,
+             contractName: 'name',
+             currency: '$',
+             description: 'desc',
+             owner: '60c3759fe5b92623acf969bb',
+             payerEmail: 'email@email.com',
+             dueDate: new Date(),
+             emailSent: true,
+             isPaid: true
+         };
+         await service.createContract(data);
+        expect(await (service.markContractAsPaid())).to.eq(true);
+    })
 });

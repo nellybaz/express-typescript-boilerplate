@@ -1,4 +1,4 @@
-export interface TalentContractData {
+export interface ITalentContractData {
     amount: number;
     payerEmail: string;
     owner: string;

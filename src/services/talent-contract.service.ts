@@ -1,7 +1,7 @@
 import { inject, injectable, named } from 'inversify';
 import TYPES from '../../config/types';
 import { IEmailService } from '../interfaces/emailservice.interface';
-import { TalentContractData } from '../interfaces/talent-contract.interface';
+import { ITalentContractData } from '../interfaces/talent-contract.interface';
 import { TalentContractRepository } from '../repository/talent-contract.repository';
 
 @injectable()
@@ -10,9 +10,13 @@ export class TalentContractService {
 
     constructor(@inject(TYPES.TalentContractRepository) private _repo: TalentContractRepository, @inject(TYPES.IEmailService) @named('inbuiltEmailService') private emailService: IEmailService) {}
 
-    async generate(data: TalentContractData) {
+    async generate(data:any) {
         try {
-            await this.createContract(data);
+            const contract: ITalentContractData = {
+                ...data,
+                owner: data.userId
+            };
+            await this.createContract(contract);
             const notificationSent = await this.sendNotificationToPayer();
             if (notificationSent) await this.markContractWhenEmailSent();
             const emailSentResponseMessage = notificationSent ? 'Email sent 👍🏾' : 'Email was not sent to payer. Click on resend email button';
@@ -26,7 +30,7 @@ export class TalentContractService {
         }
     }
 
-    async createContract(data: TalentContractData): Promise<boolean> {
+    async createContract(data: ITalentContractData): Promise<boolean> {
         try {
             this.contract = await this._repo.create({ ...data, isPaid: false, dueDate: new Date(), emailSent: false });
             return true;
@@ -49,5 +53,10 @@ export class TalentContractService {
 
     async markContractWhenEmailSent() {
         await this._repo.updateOne({ _id: this.contract._id }, { emailSent: true });
+    }
+
+    async markContractAsPaid(){
+        const resp = await this._repo.updateOne({ _id: this.contract._id }, { isPaid: true });
+        return resp != undefined
     }
 }
