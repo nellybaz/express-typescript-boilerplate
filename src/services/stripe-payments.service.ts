@@ -20,7 +20,7 @@ export class StripePaymentService {
 
     async getContractWithOwnerDetails(contractId: string) {
         const contract = await this.contractRepo.findById(contractId);
-        const talentProfile = await this.talentProfileRepository.findById(contract.owner);
+        const talentProfile = await this.talentProfileRepository.findOne({ user: contract.owner });
         return { ...contract._doc, owner: talentProfile._doc };
     }
 

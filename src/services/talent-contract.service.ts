@@ -1,5 +1,4 @@
 import { inject, injectable, named } from 'inversify';
-import { any } from 'joi';
 import TYPES from '../../config/types';
 import { IEmailService } from '../interfaces/emailservice.interface';
 import { TalentContractData } from '../interfaces/talent-contract.interface';

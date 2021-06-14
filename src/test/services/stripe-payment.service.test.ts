@@ -63,7 +63,7 @@ describe('Stripe payment service', () => {
             });
 
             const contract = await contractRepo.create({
-                owner: profile._id,
+                owner: profile.user,
                 contractName: 'contract19',
                 description: 'desc for description 19',
                 amount: 10,
